@@ -1,395 +1,261 @@
-import { layout } from '../components/layout'
+import { Layout } from '../components/layout'
 
-export function CommunityPage(): string {
-  return layout('Community', `
+export const CommunityPage = () => Layout("Community", `
 
-<!-- ── HERO ── -->
-<section class="band-dusty py-16 px-4 text-center relative overflow-hidden">
-  <div class="peace-deco absolute top-6 left-6 text-7xl">🫂</div>
-  <div class="peace-deco absolute bottom-4 right-8 text-6xl">💬</div>
-  <div class="max-w-3xl mx-auto">
-    <div class="tag-pill mb-4">💬 Community</div>
-    <h1 class="font-display text-5xl md:text-6xl font-bold text-gray-800 mb-4">Your Safe Haven</h1>
-    <p class="text-gray-600 text-xl max-w-2xl mx-auto">
-      A judgment-free zone where you can talk, share, ask, and be heard. You belong here. 🌸
-    </p>
-  </div>
-</section>
-
-<!-- ── COMMUNITY GUIDELINES ── -->
-<section class="py-10 px-4 bg-white border-b border-sage-100">
-  <div class="max-w-4xl mx-auto">
-    <div class="peace-card p-6" style="background: linear-gradient(135deg, #fef9e7, #f0f5ef);">
-      <div class="flex items-start gap-4">
-        <div class="text-4xl flex-shrink-0">🕊️</div>
-        <div>
-          <h3 class="font-bold text-gray-800 mb-2">Community Guidelines</h3>
-          <div class="flex flex-wrap gap-3 text-sm text-gray-600">
-            <span>✅ Be kind & supportive</span>
-            <span>✅ No judgment, ever</span>
-            <span>✅ Share freely, listen openly</span>
-            <span>✅ Celebrate each other's wins</span>
-            <span>❌ No unsolicited advice</span>
-            <span>❌ No shaming or stigma</span>
-          </div>
-        </div>
+  <section style="background:linear-gradient(160deg,#f5fdf8,#fdf6ec,#f5f0ff);padding:4.5rem 1.5rem 3.5rem;position:relative;overflow:hidden;">
+    <div class="blob" style="width:350px;height:350px;background:var(--teal);top:-80px;right:-60px;"></div>
+    <div class="blob" style="width:300px;height:300px;background:var(--lavender);bottom:-60px;left:-40px;"></div>
+    <div class="container" style="position:relative;z-index:1;text-align:center;">
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(74,155,142,0.12);border:1px solid rgba(74,155,142,0.25);padding:0.45rem 1rem;border-radius:20px;margin-bottom:1.5rem;">
+        <span>🌸</span><span style="font-size:0.78rem;font-weight:700;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;">Safe Haven Community</span>
+      </div>
+      <h1 class="section-title" style="margin-bottom:1rem;">Your <span>People</span> Are Here</h1>
+      <p style="color:var(--muted);font-size:1.02rem;max-width:560px;margin:0 auto 2rem;line-height:1.7;">A judgment-free space to share your story, ask for real feedback, celebrate milestones (big and tiny), and find people who actually get it.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:center;margin-bottom:2rem;">
+        <span class="tag tag-sage">✅ No Judgment</span>
+        <span class="tag tag-teal">🤝 Real Support</span>
+        <span class="tag tag-rose">💙 All Stages Welcome</span>
+        <span class="tag tag-gold">🔒 Safe Space</span>
+      </div>
+      <div style="display:inline-flex;background:white;border-radius:30px;padding:0.35rem;border:1.5px solid var(--border);gap:0.3rem;">
+        <button class="tab-btn active" onclick="switchTab('stories',this)">📖 Stories</button>
+        <button class="tab-btn" onclick="switchTab('milestones',this)">🏆 Milestones</button>
+        <button class="tab-btn" onclick="switchTab('feedback',this)">💬 Ask for Feedback</button>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── TABS ── -->
-<section class="py-16 px-4 bg-white">
-  <div class="max-w-5xl mx-auto">
+  <style>
+    .tab-btn{padding:0.6rem 1.3rem;border-radius:24px;border:none;background:none;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.88rem;color:var(--muted);cursor:pointer;transition:all 0.2s ease;}
+    .tab-btn:hover{color:var(--gold);}
+    .tab-btn.active{background:var(--gold);color:white;box-shadow:0 3px 10px rgba(200,146,58,0.3);}
+  </style>
 
-    <!-- Tab nav -->
-    <div class="flex gap-2 mb-8 flex-wrap">
-      <button onclick="switchTab('share')" class="tab-btn active" data-tab="share">📝 Share Something</button>
-      <button onclick="switchTab('feedback')" class="tab-btn" data-tab="feedback">💭 Ask for Feedback</button>
-      <button onclick="switchTab('checkin')" class="tab-btn" data-tab="checkin">🌡️ Daily Check-In</button>
-      <button onclick="switchTab('gratitude')" class="tab-btn" data-tab="gratitude">🌻 Gratitude Wall</button>
-    </div>
+  <section class="section" style="background:var(--cream);">
+    <div class="container">
 
-    <!-- Share Tab -->
-    <div id="tab-share" class="tab-content">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="font-display font-bold text-2xl text-gray-800 mb-4">What's on your mind?</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed">This is your space. Vent, celebrate, reflect — no filter needed.</p>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Your name (or stay anonymous)</label>
-              <input type="text" id="share-name" class="peace-input" placeholder="e.g. Jamie or Anonymous 🌸"/>
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">What's going on? 💙</label>
-              <textarea id="share-text" class="peace-input" rows="5" placeholder="Share anything — a win, a struggle, a thought, a question..."></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Feeling</label>
-              <div class="flex flex-wrap gap-2">
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="😊 Grateful">😊 Grateful</button>
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="💪 Strong">💪 Strong</button>
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="😔 Struggling">😔 Struggling</button>
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="😤 Frustrated">😤 Frustrated</button>
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="🌟 Hopeful">🌟 Hopeful</button>
-                <button onclick="selectMood(this)" class="mood-btn" data-mood="😴 Exhausted">😴 Exhausted</button>
-              </div>
-              <input type="hidden" id="share-mood" value=""/>
-            </div>
-            <button onclick="submitShare()" class="btn-primary w-full py-3">
-              💙 Post to Community
-            </button>
+      <div id="tab-stories">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <h2 class="section-title" style="font-size:1.8rem;">Community <span>Stories</span></h2>
+            <p style="color:var(--muted);font-size:0.9rem;margin-top:0.3rem;">Real people, real journeys. You're not alone.</p>
           </div>
+          <button onclick="openModal('storyModal')" class="btn btn-primary"><i class="fas fa-pen"></i> Share Your Story</button>
         </div>
-        <div>
-          <h3 class="font-display font-bold text-xl text-gray-800 mb-4">Recent Posts</h3>
-          <div id="community-feed" class="space-y-4 max-h-96 overflow-y-auto pr-2">
-            <!-- Dynamic -->
-          </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;" id="storiesGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);"><div style="font-size:2rem;margin-bottom:0.5rem;">🌿</div>Loading stories...</div>
         </div>
       </div>
-    </div>
 
-    <!-- Feedback Tab -->
-    <div id="tab-feedback" class="tab-content hidden">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="font-display font-bold text-2xl text-gray-800 mb-4">Ask the Community</h3>
-          <p class="text-gray-600 mb-6">Whether you need advice, a different perspective, or just someone to hear you — ask away.</p>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Your name</label>
-              <input type="text" id="fb-name" class="peace-input" placeholder="Anonymous is okay 🌸"/>
+      <div id="tab-milestones" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <h2 class="section-title" style="font-size:1.8rem;">Milestones &amp; <span>Wins</span></h2>
+            <p style="color:var(--muted);font-size:0.9rem;margin-top:0.3rem;">Every win counts. Every. Single. One.</p>
+          </div>
+          <button onclick="openModal('milestoneModal')" class="btn btn-teal"><i class="fas fa-trophy"></i> Share a Milestone</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;" id="milestonesGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);"><div style="font-size:2rem;margin-bottom:0.5rem;">🏆</div>Loading milestones...</div>
+        </div>
+      </div>
+
+      <div id="tab-feedback" style="display:none;">
+        <div style="max-width:720px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:2.5rem;">
+            <h2 class="section-title" style="font-size:1.8rem;">Ask for <span>Feedback</span></h2>
+            <p style="color:var(--muted);font-size:0.95rem;margin-top:0.5rem;line-height:1.7;">Whether you need advice on a tough situation, want accountability, or just need someone to tell you if your recovery plan makes sense — post it here.</p>
+          </div>
+          <div class="card" style="padding:2rem;margin-bottom:2rem;background:white;">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.4rem;color:var(--dark);">Post a Question or Ask for Support</h3>
+            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem;">This is a judgment-free zone. Ask away.</p>
+            <div class="form-group">
+              <label class="form-label">Your name (or stay anonymous)</label>
+              <input class="form-input" id="fbName" placeholder="Your name or 'Anonymous'">
             </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Your question or situation</label>
-              <textarea id="fb-text" class="peace-input" rows="4" placeholder="e.g. 'I've been sober 3 months and I'm starting to feel complacent. Has anyone felt this way?'"></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">What kind of support do you need?</label>
-              <select id="fb-type" class="peace-input">
-                <option value="advice">💡 Advice & suggestions</option>
-                <option value="listen">👂 Just to be heard</option>
-                <option value="experience">🎯 Similar experiences</option>
-                <option value="resources">📚 Resources & info</option>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="fbCat">
+                <option value="advice">Asking for Advice</option>
+                <option value="accountability">Accountability Check-in</option>
+                <option value="resources">Looking for Resources</option>
+                <option value="venting">Just Need to Vent</option>
+                <option value="celebrating">Celebrating a Win</option>
               </select>
             </div>
-            <button onclick="submitFeedback()" class="btn-dusty w-full py-3">
-              💭 Post Question
-            </button>
+            <div class="form-group">
+              <label class="form-label">Your question or what you need support with</label>
+              <textarea class="form-textarea" id="fbText" placeholder="What's on your mind? No filtering required here..."></textarea>
+            </div>
+            <button onclick="submitFeedback()" class="btn btn-teal" style="width:100%;"><i class="fas fa-paper-plane"></i> Post to Community</button>
           </div>
-        </div>
-        <div>
-          <h3 class="font-display font-bold text-xl text-gray-800 mb-4">Recent Questions</h3>
-          <div id="feedback-feed" class="space-y-4 max-h-96 overflow-y-auto pr-2">
-          </div>
+          <div id="feedbackList"></div>
         </div>
       </div>
+
     </div>
+  </section>
 
-    <!-- Check-In Tab -->
-    <div id="tab-checkin" class="tab-content hidden">
-      <div class="max-w-2xl mx-auto text-center">
-        <h3 class="font-display font-bold text-2xl text-gray-800 mb-2">How are you today?</h3>
-        <p class="text-gray-600 mb-8">A quick daily check-in. No pressure — just be honest with yourself.</p>
-
-        <div class="peace-card p-8 mb-8">
-          <p class="font-bold text-gray-700 mb-4">On a scale of 1–10, how are you feeling right now?</p>
-          <div class="flex items-center gap-3 mb-6">
-            <span class="text-sm text-gray-400">😔 1</span>
-            <input type="range" id="mood-slider" min="1" max="10" value="5" class="flex-1 accent-clay-500" oninput="updateMoodLabel(this.value)"/>
-            <span class="text-sm text-gray-400">10 🌟</span>
-          </div>
-          <div id="mood-label" class="font-display text-3xl font-bold mb-2" style="color:#e8924d;">5 — Hanging in there</div>
-          <div id="mood-response" class="text-gray-600 italic text-sm">That's okay. Every day counts.</div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-8 text-left">
-          <div class="peace-card p-5">
-            <p class="font-bold text-sm text-gray-700 mb-2">One thing I'm grateful for today:</p>
-            <input type="text" id="ci-grateful" class="peace-input text-sm" placeholder="Even something tiny counts..."/>
-          </div>
-          <div class="peace-card p-5">
-            <p class="font-bold text-sm text-gray-700 mb-2">One intention I'm setting:</p>
-            <input type="text" id="ci-intention" class="peace-input text-sm" placeholder="e.g. Be gentle with myself"/>
-          </div>
-        </div>
-
-        <button onclick="submitCheckin()" class="btn-primary px-10 py-3">
-          ✅ Complete Check-In
-        </button>
-
-        <!-- Streak -->
-        <div class="mt-8 peace-card p-5" style="background: linear-gradient(135deg, #fef9e7, #fdedb3);">
-          <div class="text-4xl mb-2">🔥</div>
-          <p class="font-bold text-gray-800">Check-In Streak</p>
-          <div id="streak-count" class="font-script text-4xl mt-1" style="color:#e8924d;">1 Day</div>
-          <p class="text-sm text-gray-500 mt-1">Keep showing up. It matters.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Gratitude Tab -->
-    <div id="tab-gratitude" class="tab-content hidden">
-      <div class="max-w-xl mx-auto text-center mb-10">
-        <h3 class="font-display font-bold text-2xl text-gray-800 mb-2">Community Gratitude Wall 🌻</h3>
-        <p class="text-gray-600">Share something you're grateful for today. Watch it bloom on our wall.</p>
-      </div>
-
-      <div class="max-w-xl mx-auto mb-8">
-        <div class="peace-card p-6 flex gap-3">
-          <input type="text" id="grat-text" class="peace-input" placeholder="I'm grateful for... 🌸"/>
-          <button onclick="submitGratitude()" class="btn-sage flex-shrink-0">Add 🌻</button>
-        </div>
-      </div>
-
-      <div id="gratitude-wall" class="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
-        <!-- Dynamic -->
-      </div>
+  <!-- STORY MODAL -->
+  <div class="modal-overlay" id="storyModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('storyModal')">&#10005;</button>
+      <div style="font-size:2rem;margin-bottom:0.5rem;">📖</div>
+      <h3>Share Your Story</h3>
+      <p class="sub">You don't need to have it figured out. You just need to be honest.</p>
+      <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="storyName" placeholder="e.g. Jamie M. or Anonymous"></div>
+      <div class="form-group"><label class="form-label">Your milestone (optional)</label><input class="form-input" id="storyMilestone" placeholder="e.g. 6 months sober, started therapy..."></div>
+      <div class="form-group"><label class="form-label">Your story <span style="color:var(--muted)">(required)</span></label><textarea class="form-textarea" id="storyText" placeholder="Whatever you want to share — how you're feeling, where you've been, where you're going. All of it is welcome." style="min-height:130px;"></textarea></div>
+      <button onclick="submitStory()" class="btn btn-primary" style="width:100%;"><i class="fas fa-heart"></i> Share with the Community</button>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:1rem;text-align:center;">This community is moderated with care. You're safe here. 🌿</p>
     </div>
   </div>
-</section>
 
-<style>
-.tab-btn {
-  padding: .6rem 1.2rem;
-  border-radius: 9999px;
-  border: 2px solid #d5e8d0;
-  background: white;
-  color: #4e7d54;
-  font-weight: 700;
-  font-size: .9rem;
-  cursor: pointer;
-  transition: background .2s, color .2s;
-  font-family: 'Nunito', sans-serif;
-}
-.tab-btn.active, .tab-btn:hover {
-  background: #8ab88e;
-  color: white;
-  border-color: #8ab88e;
-}
-.mood-btn {
-  padding: .35rem .85rem;
-  border-radius: 9999px;
-  border: 2px solid #d5e8d0;
-  background: white;
-  font-size: .82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .2s, border-color .2s;
-  font-family: 'Nunito', sans-serif;
-}
-.mood-btn.selected {
-  background: #d5e8d0;
-  border-color: #8ab88e;
-}
-.community-post {
-  background: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-}
-.grat-pill {
-  background: linear-gradient(135deg, #fef9e7, #fdedb3);
-  border: 1px solid #f5c430;
-  border-radius: 9999px;
-  padding: .5rem 1.2rem;
-  font-size: .88rem;
-  font-weight: 600;
-  color: #7a5c00;
-  animation: popIn .4s ease;
-}
-@keyframes popIn {
-  0% { transform: scale(0); opacity: 0; }
-  70% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
-}
-</style>
-
-<script>
-// ── TABS ──
-function switchTab(tab) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.remove('hidden');
-  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
-}
-
-// ── MOOD SELECT ──
-function selectMood(btn) {
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  document.getElementById('share-mood').value = btn.dataset.mood;
-}
-
-// ── COMMUNITY FEED ──
-const posts = [
-  { name: "Taylor R.", mood: "💪 Strong", text: "Day 60 today. I didn't think I'd make it this far. Thank you for this space. 💙", time: "2h ago" },
-  { name: "Anonymous", mood: "😔 Struggling", text: "Really hard week. Work, relationships, old habits calling. Just need to say that out loud somewhere safe.", time: "4h ago" },
-  { name: "Morgan K.", mood: "🌟 Hopeful", text: "Had my first therapy session today. Cried the whole time but also felt SO heard. Highly recommend.", time: "6h ago" },
-];
-
-function renderPosts() {
-  const feed = document.getElementById('community-feed');
-  feed.innerHTML = posts.map(p => \`
-    <div class="community-post">
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:#ddd0ed; color:#5e3d88;">\${p.name[0]}</div>
-        <div>
-          <div class="font-bold text-sm text-gray-800">\${p.name}</div>
-          <div class="text-xs text-gray-400">\${p.time}</div>
-        </div>
-        <span class="ml-auto text-xs font-bold px-2 py-1 rounded-full" style="background:#f3eef8; color:#5e3d88;">\${p.mood}</span>
-      </div>
-      <p class="text-gray-600 text-sm leading-relaxed">\${p.text}</p>
+  <!-- MILESTONE MODAL -->
+  <div class="modal-overlay" id="milestoneModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('milestoneModal')">&#10005;</button>
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🏆</div>
+      <h3>Celebrate a Milestone</h3>
+      <p class="sub">Big or small — it all counts. We're here for it.</p>
+      <div class="form-group"><label class="form-label">Your name</label><input class="form-input" id="msName" placeholder="e.g. Alex or Anonymous"></div>
+      <div class="form-group"><label class="form-label">Your milestone <span style="color:var(--muted)">(required)</span></label><input class="form-input" id="msMilestone" placeholder="e.g. 1 Year Sober, First therapy session..."></div>
+      <div class="form-group"><label class="form-label">Tell us about it (optional)</label><textarea class="form-textarea" id="msDesc" placeholder="What does this milestone mean to you?"></textarea></div>
+      <button onclick="submitMilestone()" class="btn btn-teal" style="width:100%;"><i class="fas fa-trophy"></i> Celebrate with Us!</button>
     </div>
-  \`).join('');
-}
+  </div>
 
-function submitShare() {
-  const name = document.getElementById('share-name').value.trim() || 'Anonymous';
-  const text = document.getElementById('share-text').value.trim();
-  const mood = document.getElementById('share-mood').value || '💙 Present';
-  if (!text) { showToast('Share something first 💙'); return; }
-  posts.unshift({ name, mood, text, time: 'Just now' });
-  renderPosts();
-  document.getElementById('share-name').value = '';
-  document.getElementById('share-text').value = '';
-  document.getElementById('share-mood').value = '';
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-  showToast('💙 Your post has been shared. Thank you for being here.');
-}
+  <script>
+    function switchTab(tab,btn){
+      ['stories','milestones','feedback'].forEach(t=>{
+        document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+      });
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    }
 
-// ── FEEDBACK FEED ──
-const feedbackPosts = [
-  { name: "Alex S.", type: "experience", text: "Anyone else feel weird on weekends during early recovery? Like the structure disappears and I don't know what to do with myself.", time: "1h ago" },
-  { name: "Sam W.", type: "advice", text: "How do you tell your family about your recovery without making it a whole thing? I want to be honest but also not make every dinner a therapy session.", time: "5h ago" },
-];
+    const avatarColors=['avatar-gold','avatar-teal','avatar-rose','avatar-sage','avatar-lavender','avatar-orange'];
+    function getAC(i){return avatarColors[i%avatarColors.length];}
 
-function renderFeedback() {
-  const feed = document.getElementById('feedback-feed');
-  const typeLabels = { advice: '💡 Seeking advice', listen: '👂 Need to vent', experience: '🎯 Anyone relate?', resources: '📚 Need info' };
-  feed.innerHTML = feedbackPosts.map(p => \`
-    <div class="community-post">
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style="background:#c0eae4; color:#1f7971;">\${p.name[0]}</div>
-        <div>
-          <div class="font-bold text-sm text-gray-800">\${p.name}</div>
-          <div class="text-xs text-gray-400">\${p.time}</div>
-        </div>
-        <span class="ml-auto text-xs font-bold px-2 py-1 rounded-full" style="background:#e8f7f5; color:#1f7971;">\${typeLabels[p.type] || '💬'}</span>
-      </div>
-      <p class="text-gray-600 text-sm leading-relaxed">\${p.text}</p>
-    </div>
-  \`).join('');
-}
+    function loadStories(){
+      fetch('/api/stories').then(r=>r.json()).then(stories=>{
+        const g=document.getElementById('storiesGrid');
+        if(!stories.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);">No stories yet — be the first to share! 🌸</div>';return;}
+        g.innerHTML=stories.map((s,i)=>
+          '<div class="card" style="padding:1.8rem;">'+
+          '<div style="display:flex;align-items:center;gap:0.9rem;margin-bottom:1rem;">'+
+          '<div class="avatar '+getAC(i)+'">'+s.avatar+'</div>'+
+          '<div style="flex:1;"><div style="font-weight:700;font-size:0.92rem;color:var(--dark);">'+s.name+'</div><div style="font-size:0.78rem;color:var(--muted);">'+s.date+'</div></div>'+
+          '</div>'+
+          (s.milestone?'<span class="tag tag-teal" style="margin-bottom:0.9rem;display:inline-flex;">\uD83C\uDFC6 '+s.milestone+'</span>':'')+
+          '<p style="color:var(--muted);font-size:0.92rem;line-height:1.7;margin-bottom:1.2rem;">'+s.story+'</p>'+
+          '<button class="like-btn" data-type="story" data-id="'+s.id+'" onclick="likeItem(this)"><i class="fas fa-heart"></i> <span>'+s.likes+'</span></button>'+
+          '</div>'
+        ).join('');
+      });
+    }
 
-function submitFeedback() {
-  const name = document.getElementById('fb-name').value.trim() || 'Anonymous';
-  const text = document.getElementById('fb-text').value.trim();
-  const type = document.getElementById('fb-type').value;
-  if (!text) { showToast('Write your question first 💙'); return; }
-  feedbackPosts.unshift({ name, text, type, time: 'Just now' });
-  renderFeedback();
-  document.getElementById('fb-name').value = '';
-  document.getElementById('fb-text').value = '';
-  showToast('💭 Your question was posted. You\'re not alone. 💙');
-}
+    function loadMilestones(){
+      fetch('/api/milestones').then(r=>r.json()).then(items=>{
+        const g=document.getElementById('milestonesGrid');
+        if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);">No milestones yet. Be brave! 🏆</div>';return;}
+        g.innerHTML=items.map((m,i)=>
+          '<div class="card" style="padding:1.8rem;position:relative;overflow:hidden;">'+
+          '<div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--teal));"></div>'+
+          '<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;">'+
+          '<div class="avatar '+getAC(i)+'">'+m.avatar+'</div>'+
+          '<div><div style="font-weight:700;font-size:0.92rem;color:var(--dark);">'+m.name+'</div><div style="font-size:0.78rem;color:var(--muted);">'+m.date+'</div></div>'+
+          '</div>'+
+          '<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--dark);margin-bottom:0.6rem;font-weight:700;">'+m.milestone+'</div>'+
+          (m.description?'<p style="color:var(--muted);font-size:0.9rem;line-height:1.6;margin-bottom:1rem;">'+m.description+'</p>':'')+
+          '<button class="like-btn" data-type="milestone" data-id="'+m.id+'" onclick="likeItem(this)"><i class="fas fa-fire"></i> <span>'+m.likes+'</span></button>'+
+          '</div>'
+        ).join('');
+      });
+    }
 
-// ── CHECK-IN ──
-const moodMap = {
-  1: '1 — Really rough', 2: '2 — Really rough', 3: '3 — Pretty hard',
-  4: '4 — Hard day', 5: '5 — Hanging in there', 6: '6 — Okay-ish',
-  7: '7 — Pretty good', 8: '8 — Good day!', 9: '9 — Really good!', 10: '10 — Amazing! 🌟'
-};
-const moodResponses = {
-  1: "You\'re still here. That\'s everything. 💙", 2: "You\'re still here. That\'s everything. 💙",
-  3: "Hard days are part of the journey. You\'re not failing.", 4: "You showed up today. That counts.",
-  5: "That\'s okay. Every day counts.", 6: "Better than nothing! Keep going.",
-  7: "Nice! You\'re doing great.", 8: "Look at you! Keep riding that wave. 🌊",
-  9: "That\'s beautiful. Soak it in. ✨", 10: "YES! Celebrate this day! 🎉"
-};
+    function fbLike(btn){
+      if(btn.classList.contains('liked'))return;
+      btn.classList.add('liked');
+      var span=btn.querySelector('span');
+      span.textContent=parseInt(span.textContent)+1;
+    }
 
-function updateMoodLabel(val) {
-  document.getElementById('mood-label').textContent = moodMap[val];
-  document.getElementById('mood-response').textContent = moodResponses[val];
-  const colors = ['','#e05a5a','#e05a5a','#e8924d','#e8924d','#e8a800','#e8a800','#6a9e6f','#6a9e6f','#2ea097','#2ea097'];
-  document.getElementById('mood-label').style.color = colors[val];
-}
+    function likeItem(btn){
+      if(btn.classList.contains('liked'))return;
+      var type=btn.dataset.type;
+      var id=btn.dataset.id;
+      fetch('/api/'+type+'s/'+id+'/like',{method:'POST'}).then(r=>r.json()).then(d=>{
+        btn.classList.add('liked');btn.querySelector('span').textContent=d.likes;
+        showToast('💙 Thanks for the love!','success');
+      });
+    }
 
-let streak = parseInt(localStorage.getItem('checkin-streak') || '0');
-function submitCheckin() {
-  streak++;
-  localStorage.setItem('checkin-streak', streak);
-  document.getElementById('streak-count').textContent = streak + (streak === 1 ? ' Day' : ' Days');
-  showToast('✅ Check-in complete! You showed up today. 💙');
-}
+    function submitStory(){
+      const name=document.getElementById('storyName').value.trim();
+      const story=document.getElementById('storyText').value.trim();
+      const milestone=document.getElementById('storyMilestone').value.trim();
+      if(!story){showToast('Please share something — anything! 💙','error');return;}
+      fetch('/api/stories',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',story,milestone})})
+        .then(r=>r.json()).then(()=>{
+          closeModal('storyModal');
+          showToast('🌸 Your story has been shared. Thank you for your courage.','success');
+          document.getElementById('storyName').value='';document.getElementById('storyText').value='';document.getElementById('storyMilestone').value='';
+          loadStories();
+        }).catch(()=>showToast('Something went wrong. Try again.','error'));
+    }
 
-// ── GRATITUDE ──
-const gratitudes = ['My morning coffee ☕', 'My dog\'s face 🐶', 'Making it to day 30 🌱', 'A kind text from a friend 💙', 'The sun today ☀️'];
+    function submitMilestone(){
+      const name=document.getElementById('msName').value.trim();
+      const milestone=document.getElementById('msMilestone').value.trim();
+      const description=document.getElementById('msDesc').value.trim();
+      if(!milestone){showToast('What milestone are you celebrating? 🏆','error');return;}
+      fetch('/api/milestones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',milestone,description})})
+        .then(r=>r.json()).then(()=>{
+          closeModal('milestoneModal');
+          showToast('🎉 Milestone shared! We are SO proud!','success');
+          document.getElementById('msName').value='';document.getElementById('msMilestone').value='';document.getElementById('msDesc').value='';
+          loadMilestones();
+        }).catch(()=>showToast('Something went wrong.','error'));
+    }
 
-function renderGratitude() {
-  document.getElementById('gratitude-wall').innerHTML = gratitudes.map(g =>
-    \`<div class="grat-pill">🌻 \${g}</div>\`
-  ).join('');
-}
+    const feedbackPosts=[
+      {id:1,name:"Someone going through it",cat:"advice",text:"How do you handle cravings when they hit at 2am and there's no one to call? I've tried the usual stuff but some nights feel impossible.",date:"Today",replies:4},
+      {id:2,name:"Anonymous",cat:"accountability",text:"Day 3 clean. Just checking in. Feeling shaky but still here.",date:"Yesterday",replies:7},
+      {id:3,name:"River T.",cat:"celebrating",text:"Just wanted to share — I made it to my first AA meeting. Shook the whole time. But I went.",date:"2 days ago",replies:12}
+    ];
 
-function submitGratitude() {
-  const text = document.getElementById('grat-text').value.trim();
-  if (!text) return;
-  gratitudes.unshift(text);
-  renderGratitude();
-  document.getElementById('grat-text').value = '';
-  showToast('🌻 Added to the gratitude wall!');
-}
+    const catLabel={advice:'🙋 Advice',accountability:'✅ Accountability',resources:'📚 Resources',venting:'💨 Venting',celebrating:'🎉 Celebrating'};
+    const catTagClass={advice:'tag-teal',accountability:'tag-sage',resources:'tag-lavender',venting:'tag-rose',celebrating:'tag-gold'};
 
-// Init
-renderPosts();
-renderFeedback();
-renderGratitude();
-streak = parseInt(localStorage.getItem('checkin-streak') || '1');
-document.getElementById('streak-count').textContent = streak + (streak === 1 ? ' Day' : ' Days');
-</script>
-`, '/community')
-}
+    function renderFeedback(){
+      document.getElementById('feedbackList').innerHTML=feedbackPosts.map((p,i)=>
+        '<div class="card" style="padding:1.8rem;margin-bottom:1.2rem;">'+
+        '<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;flex-wrap:wrap;">'+
+        '<div class="avatar '+getAC(i)+'" style="width:36px;height:36px;font-size:0.85rem;">'+p.name[0].toUpperCase()+'</div>'+
+        '<span style="font-weight:700;font-size:0.9rem;color:var(--dark);">'+p.name+'</span>'+
+        '<span style="color:var(--muted);font-size:0.78rem;">'+p.date+'</span>'+
+        '<span class="tag '+(catTagClass[p.cat]||'tag-gold')+'">'+(catLabel[p.cat]||p.cat)+'</span>'+
+        '</div>'+
+        '<p style="color:var(--muted);font-size:0.93rem;line-height:1.7;margin-bottom:1rem;">'+p.text+'</p>'+
+        '<div style="display:flex;gap:1rem;">'+
+        '<button class="like-btn"><i class="fas fa-comment"></i> '+p.replies+' replies</button>'+
+        '<button class="like-btn" data-fb-like onclick="fbLike(this)"><i class="fas fa-heart"></i> <span>0</span></button>'+
+        '</div></div>'
+      ).join('');
+    }
+
+    function submitFeedback(){
+      const name=document.getElementById('fbName').value.trim();
+      const text=document.getElementById('fbText').value.trim();
+      const cat=document.getElementById('fbCat').value;
+      if(!text){showToast("Share what's on your mind 💙",'error');return;}
+      feedbackPosts.unshift({id:feedbackPosts.length+1,name:name||'Anonymous',cat,text,date:'Just now',replies:0});
+      document.getElementById('fbName').value='';document.getElementById('fbText').value='';
+      renderFeedback();showToast('💙 Posted! The community is here for you.','success');
+    }
+
+    loadStories();loadMilestones();renderFeedback();
+  </script>
+
+`, 'community')
