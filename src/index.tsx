@@ -12,7 +12,16 @@ import { AffirmationsPage } from './pages/affirmations'
 const app = new Hono()
 
 app.use('/static/*', serveStatic({ root: './' }))
+app.use('/public/*', serveStatic({ root: './' }))
 app.use('/api/*', cors())
+
+app.get('/favicon.ico', (c) => {
+  return c.redirect('/favicon.svg', 302)
+})
+app.get('/favicon.svg', (c) => {
+  c.header('Content-Type', 'image/svg+xml')
+  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#7c3aed"/><text y=".9em" font-size="80" x="10">🕊️</text></svg>`)
+})
 
 // Pages
 app.get('/', (c) => c.html(HomePage()))

@@ -1,7 +1,7 @@
-import { Layout } from '../components/layout'
+import { layout } from '../components/layout'
 
 export function MilestonesPage(): string {
-  return Layout('Milestones', `
+  return layout('Milestones', `
 
 <!-- ── HERO ── -->
 <section class="band-gold py-16 px-4 text-center relative overflow-hidden">
