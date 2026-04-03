@@ -162,14 +162,14 @@ function nav(active: string) {
     <span class="brand-name">Finding Peace</span>
   </a>
   <div class="nav-links">${items}</div>
-  <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} TikTok</a>
+  <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} TikTok</a>
   <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 <div class="mob-menu" id="mob">
   ${items}
-  <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} Follow on TikTok</a>
+  <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} Follow on TikTok</a>
 </div>`
 }
 
@@ -181,7 +181,7 @@ function footer() {
       <div class="footer-brand-name">Finding Peace</div>
       <p class="footer-tag">Real talk on mental health &amp; addiction recovery.<br>No toxic positivity. Just truth, tools, and community.<br>Based in New Jersey 🌿</p>
       <div class="footer-socials">
-        <a href="https://www.tiktok.com/@findingpeace" target="_blank" class="fsoc fsoc-tik">${tiktokIcon}</a>
+        <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" class="fsoc fsoc-tik">${tiktokIcon}</a>
         <a href="https://instagram.com" target="_blank" class="fsoc fsoc-ig"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
@@ -291,7 +291,7 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
           Hey — I'm Devon. Based in New Jersey, dog mom to Odin, and someone who talks about the parts of mental health &amp; addiction recovery that usually get polished away. No toxic positivity. Just real talk, real tools, and a real community.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem">
-          <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow on TikTok</a>
+          <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow on TikTok</a>
           <a href="/community" class="btn btn-teal"><i class="fas fa-heart"></i> Join the Community</a>
           <a href="/about" class="btn btn-ghost">My Story →</a>
         </div>
@@ -410,10 +410,10 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
       </div>
       <div style="flex:1;min-width:200px">
         <div style="color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem">Daily Content on TikTok</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:#fff;margin-bottom:.55rem">@findingpeace</h3>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:#fff;margin-bottom:.55rem">@finding.peaceinc</h3>
         <p style="color:rgba(255,255,255,.62);font-size:.88rem;line-height:1.55">Daily funny affirmations, real recovery talk, and content that makes you go "omg same" — come hang.</p>
       </div>
-      <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#0d0d0d;padding:.75rem 1.45rem;border-radius:25px;font-weight:800;font-size:.88rem;text-decoration:none;transition:transform .2s;flex-shrink:0" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Follow <i class="fas fa-arrow-right"></i></a>
+      <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#0d0d0d;padding:.75rem 1.45rem;border-radius:25px;font-weight:800;font-size:.88rem;text-decoration:none;transition:transform .2s;flex-shrink:0" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Follow <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -478,8 +478,8 @@ app.get('/about', c => c.html(page("My Story", '/about', `
             <div style="font-size:.68rem;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Dog Mom To</div>
             <div style="font-weight:800;color:var(--dark)">🐕 Odin</div>
           </div>
-          <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.45rem;background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;text-decoration:none;padding:.7rem 1.1rem;border-radius:20px;font-weight:800;font-size:.86rem;box-shadow:0 4px 14px rgba(255,0,80,.28)">
-            ${tiktokIcon} @findingpeace
+          <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.45rem;background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;text-decoration:none;padding:.7rem 1.1rem;border-radius:20px;font-weight:800;font-size:.86rem;box-shadow:0 4px 14px rgba(255,0,80,.28)">
+            ${tiktokIcon} @finding.peaceinc
           </a>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">
@@ -591,7 +591,7 @@ app.get('/affirmations', c => c.html(page("Daily Affirmations", '/affirmations',
     <div style="font-size:2.4rem;margin-bottom:.9rem">📲</div>
     <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--dark);margin-bottom:.75rem">Want More Daily?</h2>
     <p style="color:var(--muted);font-size:.96rem;line-height:1.7;margin-bottom:1.7rem">I post daily affirmations and recovery content on TikTok. Come hang — bring your messy, unfinished self. That's literally the vibe.</p>
-    <a href="https://www.tiktok.com/@findingpeace" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow @findingpeace</a>
+    <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow @finding.peaceinc</a>
   </div>
 </section>
 
