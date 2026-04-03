@@ -151,6 +151,7 @@ function nav(active: string) {
     ['/community', 'Community'],
     ['/merch', '🛍️ Merch'],
     ['/resources', 'Resources'],
+    ['/links', '🔗 Links'],
   ]
   const items = links.map(([href, label]) =>
     `<a href="${href}" class="nav-link${active === href ? ' active' : ''}">${label}</a>`
@@ -194,6 +195,7 @@ function footer() {
       <a href="/community">Community</a>
       <a href="/merch">🛍️ Merch Shop</a>
       <a href="/resources">Resources</a>
+      <a href="/links">🔗 All My Links</a>
     </div>
     <div class="footer-col">
       <h4>Get Help Now</h4>
@@ -1167,6 +1169,91 @@ function fMerch(cat, btn) {
   });
 }
 </script>
+`)))
+
+// ─── LINKS / LINK TREE ───────────────────────────────────────────────
+app.get('/links', c => c.html(page("Links", '/links', `
+
+<section style="background:linear-gradient(160deg,#1a2e28,#0d2318,#1a2438);padding:4.5rem 1.5rem 3rem;position:relative;overflow:hidden;text-align:center">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(74,155,142,.18) 0%,transparent 50%),radial-gradient(circle at 75% 50%,rgba(200,146,58,.12) 0%,transparent 50%)"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-l));margin:0 auto 1.2rem;padding:4px;box-shadow:0 8px 30px rgba(74,155,142,.4)">
+      <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:3px solid #fff">
+    </div>
+    <h1 style="font-family:'Dancing Script',cursive;font-size:2.8rem;color:#fff;margin-bottom:.4rem">Finding Peace</h1>
+    <p style="color:rgba(255,255,255,.6);font-size:.95rem;margin-bottom:.5rem">with Devon 🌿</p>
+    <p style="color:rgba(255,255,255,.5);font-size:.85rem;max-width:400px;margin:0 auto">Mental health &amp; addiction recovery — real talk, real tools, real community.</p>
+    <div style="display:flex;gap:.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap">
+      <a href="https://tiktok.com/@finding.peaceinc" target="_blank" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:800;text-decoration:none">${tiktokIcon} TikTok</a>
+      <a href="https://youtube.com/@finding_peaceinc" target="_blank" style="background:#ff0000;color:#fff;padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:800;text-decoration:none"><i class="fab fa-youtube"></i> YouTube</a>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--cream);padding:3rem 1.5rem 4rem">
+  <div style="max-width:560px;margin:0 auto">
+
+    <!-- CONTENT360 LINKTREE -->
+    <div style="font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem;text-align:center">🌿 All My Links in One Place</div>
+
+    <a href="https://link.content360.io/Peace" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,#4a9b8e,#2d7a6e);color:#fff;text-decoration:none;padding:1.2rem 1.4rem;border-radius:16px;margin-bottom:2rem;transition:transform .2s;box-shadow:0 6px 24px rgba(74,155,142,.4)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem">🔗</div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:1rem">Finding Peace — Full Link Tree</div>
+        <div style="font-size:.8rem;opacity:.8;margin-top:.2rem">All my links, resources &amp; tools in one place</div>
+        <div style="font-size:.72rem;opacity:.6;margin-top:.1rem">link.content360.io/Peace</div>
+      </div>
+      <i class="fas fa-external-link-alt" style="opacity:.8;font-size:.9rem"></i>
+    </a>
+
+    <!-- SOCIAL -->
+    <div style="font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem;text-align:center">🌸 Follow Along</div>
+
+    <a href="https://tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="link-item" style="display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,#0d0d0d,#1a1a2e);color:#fff;text-decoration:none;padding:1.1rem 1.4rem;border-radius:16px;margin-bottom:.75rem;transition:transform .2s;box-shadow:0 4px 16px rgba(0,0,0,.15)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ff0050,#00f2ea);display:flex;align-items:center;justify-content:center;flex-shrink:0">${tiktokIcon}</div>
+      <div><div style="font-weight:800;font-size:.95rem">Finding Peace TikTok</div><div style="font-size:.78rem;opacity:.6;margin-top:.1rem">@finding.peaceinc — Daily affirmations &amp; recovery talk</div></div>
+      <i class="fas fa-arrow-right" style="margin-left:auto;opacity:.4"></i>
+    </a>
+
+    <a href="https://youtube.com/@finding_peaceinc?si=jk-wZnIRaMNeZLR4" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:1rem;background:#fff;color:var(--dark);text-decoration:none;padding:1.1rem 1.4rem;border-radius:16px;margin-bottom:.75rem;border:1.5px solid var(--border);transition:transform .2s;box-shadow:0 4px 16px var(--shadow)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:42px;height:42px;border-radius:12px;background:#ff0000;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:1.1rem"><i class="fab fa-youtube"></i></div>
+      <div><div style="font-weight:800;font-size:.95rem">FindingPeace YouTube</div><div style="font-size:.78rem;color:var(--muted);margin-top:.1rem">@finding_peaceinc — Videos &amp; longer content</div></div>
+      <i class="fas fa-arrow-right" style="margin-left:auto;color:var(--muted);opacity:.4"></i>
+    </a>
+
+    <a href="https://finding-peace-5.myshopify.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;text-decoration:none;padding:1.1rem 1.4rem;border-radius:16px;margin-bottom:2rem;transition:transform .2s;box-shadow:0 4px 16px rgba(200,146,58,.35)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem">🛍️</div>
+      <div><div style="font-weight:800;font-size:.95rem">Finding Peace Shop</div><div style="font-size:.78rem;opacity:.8;margin-top:.1rem">Merch — tees, mugs, blankets &amp; more</div></div>
+      <i class="fas fa-arrow-right" style="margin-left:auto;opacity:.7"></i>
+    </a>
+
+    <!-- CREATOR TOOLS -->
+    <div style="font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.9rem;text-align:center">🛠️ My Favorite Creator Tools</div>
+
+    ${[
+      { href: 'https://www.heygen.com/?sid=rewardful&via=d96290', icon: '🎬', name: 'HeyGen', desc: 'AI video creation — what I use for my content', bg: 'linear-gradient(135deg,#6366f1,#8b5cf6)' },
+      { href: 'https://invideo.sjv.io/c/6647496/883681/12258', icon: '🎥', name: 'Invideo AI', desc: 'Turn scripts into videos automatically', bg: 'linear-gradient(135deg,#0ea5e9,#6366f1)' },
+      { href: 'https://riverside.sjv.io/RGkyJN', icon: '🎙️', name: 'Riverside', desc: 'Studio-quality recording for podcasts & video', bg: 'linear-gradient(135deg,#ec4899,#8b5cf6)' },
+      { href: 'https://try.elevenlabs.io/jjwq8j5w825j', icon: '🔊', name: 'Eleven Labs', desc: 'AI voice generation — sounds incredibly real', bg: 'linear-gradient(135deg,#f59e0b,#ef4444)' },
+      { href: 'https://syllaby.io/?via=devon58&fp_sid=future', icon: '📝', name: 'Syllaby', desc: 'Content planning & script writing with AI', bg: 'linear-gradient(135deg,#10b981,#0ea5e9)' },
+      { href: 'https://openart.ai/home/?via=devon', icon: '🎨', name: 'OpenArt AI', desc: 'AI image generation for content creation', bg: 'linear-gradient(135deg,#f97316,#ec4899)' },
+      { href: 'http://amoti.ai/#claritycollectives', icon: '🤖', name: 'Amoti', desc: 'AI tools for creators', bg: 'linear-gradient(135deg,#14b8a6,#6366f1)' },
+      { href: 'https://galaxy.ai/?ref=devon', icon: '🌌', name: 'Galaxy.AI', desc: 'All-in-one AI platform for content creators', bg: 'linear-gradient(135deg,#1e1b4b,#4338ca)' },
+      { href: 'https://genspark.ai/?via=FindingPeace', icon: '✨', name: 'Genspark', desc: 'AI-powered research & content creation', bg: 'linear-gradient(135deg,#0f172a,#1e40af)' },
+    ].map(l => `
+    <a href="${l.href}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:1rem;background:#fff;color:var(--dark);text-decoration:none;padding:1rem 1.4rem;border-radius:16px;margin-bottom:.65rem;border:1.5px solid var(--border);transition:transform .2s;box-shadow:0 3px 12px var(--shadow)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:40px;height:40px;border-radius:11px;background:${l.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">${l.icon}</div>
+      <div><div style="font-weight:800;font-size:.92rem">${l.name}</div><div style="font-size:.78rem;color:var(--muted);margin-top:.08rem">${l.desc}</div></div>
+      <span style="margin-left:auto;background:var(--gold-p);color:var(--mid);font-size:.68rem;font-weight:800;padding:.2rem .55rem;border-radius:8px;flex-shrink:0">Affiliate</span>
+    </a>`).join('')}
+
+    <div style="text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+      <p style="font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:.9rem;margin-bottom:1rem">"I only share tools I actually use and believe in." — Devon 🌿</p>
+      <a href="/" class="btn btn-ghost" style="font-size:.85rem"><i class="fas fa-home"></i> Back to Finding Peace</a>
+    </div>
+
+  </div>
+</section>
 `)))
 
 // ─── REDIRECT stubs ───────────────────────────────────────────────────
