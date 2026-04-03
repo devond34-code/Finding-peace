@@ -271,46 +271,45 @@ const milestones: any[] = [
 // ─── HOME ────────────────────────────────────────────────────────────
 app.get('/', c => c.html(page('Welcome Home', '/', `
 
+<!-- HERO -->
 <section style="position:relative;overflow:hidden;background:linear-gradient(155deg,#fdf6ec 0%,#f5ede0 45%,#eef5f0 100%);padding:5rem 1.5rem 4.5rem">
   <div class="blob" style="width:480px;height:480px;background:var(--gold);top:-100px;right:-100px"></div>
   <div class="blob" style="width:380px;height:380px;background:var(--teal);bottom:-80px;left:-80px"></div>
   <div class="blob" style="width:260px;height:260px;background:var(--lav);top:35%;left:35%"></div>
-  <div style="position:absolute;top:1.5rem;right:9%;font-size:3rem;opacity:.05;transform:rotate(15deg)">☮</div>
-  <div style="position:absolute;bottom:3rem;left:5%;font-size:4rem;opacity:.05;transform:rotate(-10deg)">🌸</div>
   <div class="container" style="position:relative;z-index:1">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
-        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,146,58,.12);border:1px solid rgba(200,146,58,.3);padding:.42rem .95rem;border-radius:20px;margin-bottom:1.4rem">
+        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,146,58,.12);border:1px solid rgba(200,146,58,.3);padding:.42rem .95rem;border-radius:20px;margin-bottom:1.2rem">
           <span>🌿</span><span style="font-size:.78rem;font-weight:800;color:var(--gold);letter-spacing:.08em;text-transform:uppercase">Mental Health &amp; Addiction Recovery</span>
         </div>
-        <h1 style="font-family:'Dancing Script',cursive;font-size:clamp(3rem,7vw,5.5rem);color:var(--dark);line-height:1.05;margin-bottom:.8rem">
-          Finding<br><span style="color:var(--gold)">Peace</span>
+        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.2rem);color:var(--dark);line-height:1.15;margin-bottom:.7rem;font-weight:700">
+          Your Path to <span style="color:var(--teal);font-style:italic">Recovery</span><br>and Mental <span style="color:var(--gold);font-style:italic">Wellness</span>
         </h1>
-        <p style="font-family:'Playfair Display',serif;font-size:1.12rem;color:var(--mid);font-style:italic;margin-bottom:1.4rem;line-height:1.6">
-          "You don't have to have it all figured out to move forward."
+        <p style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--mid);margin-bottom:1.1rem;line-height:1.5">
+          — with Finding Peace
         </p>
         <p style="font-size:.98rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;max-width:470px">
-          Hey — I'm Devon. Based in New Jersey, dog mom to Odin, and someone who talks about the parts of mental health &amp; addiction recovery that usually get polished away. No toxic positivity. Just real talk, real tools, and a real community.
+          Real talk, real tools, and a real community for people navigating addiction recovery and mental health — without the toxic positivity. You don't have to have it all figured out to move forward.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem">
-          <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow on TikTok</a>
           <a href="/community" class="btn btn-teal"><i class="fas fa-heart"></i> Join the Community</a>
-          <a href="/about" class="btn btn-ghost">My Story →</a>
+          <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow on TikTok</a>
+          <a href="/resources" class="btn btn-ghost">Find Resources →</a>
         </div>
         <div style="display:flex;gap:2rem;flex-wrap:wrap">
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold)">Daily</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Affirmations</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold)">30+</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Affirmations</div></div>
           <div style="width:1px;background:var(--border)"></div>
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--teal)">100%</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Zero Fluff</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--teal)">Free</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Resources</div></div>
           <div style="width:1px;background:var(--border)"></div>
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--lav)">NJ</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Based</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--lav)">Real</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Community</div></div>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:1.4rem">
         <div style="position:relative">
-          <div style="width:255px;height:255px;border-radius:50%;background:linear-gradient(135deg,rgba(200,146,58,.14),rgba(74,155,142,.14));display:flex;align-items:center;justify-content:center;border:2px solid rgba(200,146,58,.22)">
-            <img src="https://www.genspark.ai/api/files/s/Gzabg75Z" alt="Finding Peace" style="width:225px;height:225px;object-fit:contain;border-radius:50%" onerror="this.parentElement.innerHTML='<div style=\\'font-family:Dancing Script,cursive;font-size:2.8rem;color:var(--gold);text-align:center;padding:1.5rem;\\'>Finding<br>Peace</div>'">
+          <div style="width:270px;height:270px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-l));padding:5px;box-shadow:0 12px 40px rgba(74,155,142,.35)">
+            <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:4px solid #fff">
           </div>
-          <div style="position:absolute;top:-8px;right:-8px;background:linear-gradient(135deg,var(--teal),var(--teal-l));color:#fff;border-radius:14px;padding:.45rem .85rem;font-size:.76rem;font-weight:800;box-shadow:0 4px 14px rgba(74,155,142,.35)">🌿 Real. Honest. Healing.</div>
+          <div style="position:absolute;bottom:8px;right:-10px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;border-radius:14px;padding:.45rem .85rem;font-size:.76rem;font-weight:800;box-shadow:0 4px 14px rgba(200,146,58,.4)">🌿 Real. Honest. Healing.</div>
         </div>
         <div class="card" style="padding:1.2rem 1.4rem;max-width:310px;width:100%;background:linear-gradient(135deg,#fffdf7,#fdf6ec);border-color:var(--gold-p)">
           <div style="font-size:.7rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem">✨ Today's Affirmation</div>
@@ -320,6 +319,41 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
     </div>
   </div>
   <style>@media(max-width:768px){section .container>div{grid-template-columns:1fr!important}section .container>div>div:last-child{display:none!important}}</style>
+</section>
+
+<!-- MEET DEVON -->
+<section style="background:#fff;padding:5rem 1.5rem">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:center">
+      <div class="reveal" style="text-align:center">
+        <div style="position:relative;display:inline-block">
+          <div style="width:280px;height:280px;border-radius:28px;background:linear-gradient(135deg,var(--teal),var(--teal-l));padding:5px;box-shadow:0 16px 50px rgba(74,155,142,.3);display:inline-block">
+            <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:24px;border:4px solid #fff">
+          </div>
+          <div style="position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:.55rem 1.2rem;border-radius:30px;font-size:.82rem;font-weight:800;white-space:nowrap;box-shadow:0 6px 20px rgba(44,36,24,.25)">👋 Hey, I'm Devon!</div>
+        </div>
+        <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center">
+          <span class="tag tag-teal">📍 New Jersey</span>
+          <span class="tag tag-gold">🐕 Dog Mom to Odin</span>
+          <span class="tag tag-rose">💙 Recovery Advocate</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div style="color:var(--teal);font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem">Meet Your Host</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,2.7rem);color:var(--dark);line-height:1.2;margin-bottom:1rem">The Real Person<br><span style="color:var(--gold);font-style:italic">Behind the Mission</span></h2>
+        <p style="font-size:.98rem;color:var(--muted);line-height:1.85;margin-bottom:1rem">I'm Devon — creator, dog mom, and someone who talks about the parts of mental health and addiction recovery that usually get polished away. I know firsthand that the road to finding peace isn't a straight line. It's messy, occasionally funny, and always a work in progress.</p>
+        <p style="font-size:.98rem;color:var(--muted);line-height:1.85;margin-bottom:1.6rem">I don't do toxic positivity. I share realistic tools, direct advice, and funny affirmations that actually work — because they're rooted in the truth of the struggle. Whether you're in recovery or just trying to keep your head above water, you belong here.</p>
+        <div style="background:linear-gradient(135deg,var(--teal-p),var(--lav-p));border-radius:16px;padding:1.3rem 1.5rem;border-left:4px solid var(--teal);margin-bottom:1.6rem">
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.02rem;color:var(--dark);line-height:1.65;margin:0">"I believe in being blunt, staying relatable, and using every tool available to help us all find a little more clarity in the chaos."</p>
+        </div>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+          <a href="/about" class="btn btn-teal"><i class="fas fa-user"></i> My Full Story</a>
+          <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff">${tiktokIcon} Follow on TikTok</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>@media(max-width:900px){.container>div[style*="grid-template-columns:1fr 1.6fr"]{grid-template-columns:1fr!important;text-align:center!important}.container>div[style*="grid-template-columns:1fr 1.6fr"]>div:last-child{text-align:left!important}}</style>
 </section>
 
 <!-- WHAT I'M ABOUT -->
