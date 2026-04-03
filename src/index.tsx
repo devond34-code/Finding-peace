@@ -149,6 +149,7 @@ function nav(active: string) {
     ['/about', 'My Story'],
     ['/affirmations', 'Affirmations'],
     ['/community', 'Community'],
+    ['/merch', '🛍️ Merch'],
     ['/resources', 'Resources'],
   ]
   const items = links.map(([href, label]) =>
@@ -191,6 +192,7 @@ function footer() {
       <a href="/about">My Story</a>
       <a href="/affirmations">Daily Affirmations</a>
       <a href="/community">Community</a>
+      <a href="/merch">🛍️ Merch Shop</a>
       <a href="/resources">Resources</a>
     </div>
     <div class="footer-col">
@@ -942,6 +944,194 @@ function fRes(cat,btn){
   document.querySelectorAll('.res-card').forEach(c=>{if(cat==='all'||c.dataset.cat===cat)c.classList.remove('hidden');else c.classList.add('hidden')});
 }
 renderRes();
+</script>
+`)))
+
+// ─── MERCH ────────────────────────────────────────────────────────────
+app.get('/merch', c => c.html(page("Merch", '/merch', `
+
+<section style="background:linear-gradient(160deg,#fdf6ec,#f5ede0,#eef5f0);padding:4.5rem 1.5rem 3.5rem;position:relative;overflow:hidden">
+  <div class="blob" style="width:380px;height:380px;background:var(--gold);top:-80px;right:-80px"></div>
+  <div class="blob" style="width:300px;height:300px;background:var(--teal);bottom:-60px;left:-60px"></div>
+  <div class="container" style="position:relative;z-index:1;text-align:center">
+    <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,146,58,.12);border:1px solid rgba(200,146,58,.3);padding:.42rem .95rem;border-radius:20px;margin-bottom:1.4rem">
+      <span>🛍️</span><span style="font-size:.76rem;font-weight:800;color:var(--gold);letter-spacing:.1em;text-transform:uppercase">Finding Peace Shop</span>
+    </div>
+    <h1 style="font-family:'Dancing Script',cursive;font-size:clamp(2.8rem,7vw,5rem);color:var(--dark);line-height:1.1;margin-bottom:.9rem">Wear Your <span style="color:var(--gold)">Peace</span></h1>
+    <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:var(--mid);line-height:1.7;max-width:550px;margin:0 auto 1.5rem">Every purchase supports the Finding Peace community and helps keep the real talk going. 🌿</p>
+    <a href="https://finding-peace-5.myshopify.com" target="_blank" rel="noopener" class="btn btn-primary"><i class="fas fa-store"></i> Visit Full Shop</a>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<section style="padding:1.4rem 1.5rem;background:#fff;border-bottom:1.5px solid var(--border);position:sticky;top:68px;z-index:100">
+  <div class="container"><div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center">
+    <button class="filter-btn active" onclick="fMerch('all',this)">🌿 All</button>
+    <button class="filter-btn" onclick="fMerch('tees',this)">👕 Tees</button>
+    <button class="filter-btn" onclick="fMerch('sweatshirts',this)">🧥 Sweatshirts</button>
+    <button class="filter-btn" onclick="fMerch('mugs',this)">☕ Mugs</button>
+    <button class="filter-btn" onclick="fMerch('blankets',this)">🛋️ Blankets</button>
+    <button class="filter-btn" onclick="fMerch('stickers',this)">✨ Stickers</button>
+  </div></div>
+</section>
+
+<!-- PRODUCTS GRID -->
+<section class="section" style="background:var(--cream)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem" id="merchGrid">
+
+      <!-- TEES -->
+      <div class="card merch-card" data-cat="tees" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/8434505372522819799_2048.jpg?v=1775077309" alt="Unisex Jersey Short Sleeve Tee" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-rose">👕 Tee</span></div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Unisex Jersey Short Sleeve Tee</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Soft, comfy everyday tee. Perfect for spreading peace vibes wherever you go.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $18.80</span>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-jersey-short-sleeve-tee" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card merch-card" data-cat="tees" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/2485656942543296210_2048.jpg?v=1775076894" alt="Unisex Heavy Cotton Tee" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-rose">👕 Tee</span></div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Unisex Heavy Cotton Tee</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Classic heavyweight tee — durable, cozy, and made to last.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $15.83</span>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-cotton-tee" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SWEATSHIRTS -->
+      <div class="card merch-card" data-cat="sweatshirts" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/3995616787701706313_2048.jpg?v=1775079040" alt="Unisex Heavy Blend Crewneck Sweatshirt" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-lav">🧥 Sweatshirt</span></div>
+          <div style="position:absolute;top:.75rem;right:.75rem;background:var(--gold);color:#fff;font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:10px">⭐ Bestseller</div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Unisex Heavy Blend™ Crewneck</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Super soft, warm, and cozy. The perfect sweatshirt for healing-era days.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$40.73</span>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-blend™-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card merch-card" data-cat="sweatshirts" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/4106554200537425890_2048.jpg?v=1775083279" alt="Youth Crewneck Sweatshirt" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-lav">🧥 Sweatshirt</span></div>
+          <div style="position:absolute;top:.75rem;right:.75rem;background:var(--teal);color:#fff;font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:10px">👦 Youth</div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Youth Crewneck Sweatshirt</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">50/50 cotton-poly blend. Cozy and warm for the little peace-seekers.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$43.20</span>
+            <a href="https://finding-peace-5.myshopify.com/products/youth-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- MUGS -->
+      <div class="card merch-card" data-cat="mugs" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/11518413508361612491_2048.jpg?v=1775079855" alt="Accent Coffee Mug" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-gold">☕ Mug</span></div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Accent Coffee Mug (11, 15oz)</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Start your morning with peace. Glossy ceramic with a pop of color.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $10.42</span>
+            <a href="https://finding-peace-5.myshopify.com/products/accent-coffee-mug-11-15oz" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card merch-card" data-cat="mugs" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/8000187304575015707_2048.jpg?v=1775078984" alt="Ceramic Mug" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-gold">☕ Mug</span></div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Ceramic Mug (11oz, 15oz)</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Classic white ceramic mug. Your daily affirmation deserves a good cup.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $8.22</span>
+            <a href="https://finding-peace-5.myshopify.com/products/ceramic-mug-11oz-15oz" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLANKETS -->
+      <div class="card merch-card" data-cat="blankets" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/9586866287753203319_2048.jpg?v=1775079799" alt="Velveteen Plush Blanket" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-teal">🛋️ Blanket</span></div>
+          <div style="position:absolute;top:.75rem;right:.75rem;background:var(--rose);color:#fff;font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:10px">💙 Fan Fave</div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Velveteen Plush Blanket</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Ultra-soft plush blanket. For the days when you need to wrap yourself in peace. 🌿</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$38.52</span>
+            <a href="https://finding-peace-5.myshopify.com/products/velveteen-plush-blanket" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STICKERS -->
+      <div class="card merch-card" data-cat="stickers" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:#f5f5f5;height:260px">
+          <img src="https://cdn.shopify.com/s/files/1/0813/8057/3399/files/16008051260292357048_1200.jpg?v=1775079179" alt="Kiss-Cut Stickers" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-sage">✨ Sticker</span></div>
+          <div style="position:absolute;top:.75rem;right:.75rem;background:var(--gold);color:#fff;font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:10px">💛 Best Value</div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">Kiss-Cut Stickers</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Stick your peace everywhere. Laptops, water bottles, journals — you name it.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $2.63</span>
+            <a href="https://finding-peace-5.myshopify.com/products/kiss-cut-stickers" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SHOP CTA -->
+<section style="padding:4rem 1.5rem;background:#fff">
+  <div style="max-width:680px;margin:0 auto;text-align:center" class="reveal">
+    <div style="font-size:3rem;margin-bottom:1rem">🛍️</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4vw,2.5rem);color:var(--dark);margin-bottom:.9rem">Every Purchase <span style="color:var(--gold);font-style:italic">Matters</span></h2>
+    <p style="color:var(--muted);font-size:.98rem;line-height:1.75;margin-bottom:2rem">When you rep Finding Peace, you're not just wearing merch — you're helping spread a message that mental health and recovery deserve to be talked about loudly and honestly. Thank you. 💙</p>
+    <a href="https://finding-peace-5.myshopify.com" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:.85rem 2rem"><i class="fas fa-store"></i> Shop All Products</a>
+  </div>
+</section>
+
+<script>
+function fMerch(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.merch-card').forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) c.style.display = '';
+    else c.style.display = 'none';
+  });
+}
 </script>
 `)))
 
