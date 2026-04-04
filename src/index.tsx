@@ -273,14 +273,14 @@ function doRegister(){
 }
 function updateNavAuth(user){
   if(!user){
-    document.getElementById('nav-auth-area').innerHTML='<button onclick="openModal(\\'authMod\\')" class="nav-login"><i class="fas fa-user"></i> Sign In</button>';
+    var btn=document.createElement('button');btn.className='nav-login';btn.innerHTML='<i class="fas fa-user"></i> Sign In';btn.onclick=function(){openModal('authMod')};document.getElementById('nav-auth-area').innerHTML='';document.getElementById('nav-auth-area').appendChild(btn);
     if(document.getElementById('mob-login-link'))document.getElementById('mob-login-link').style.display='';
     if(document.getElementById('mob-profile-link'))document.getElementById('mob-profile-link').style.display='none';
     return;
   }
   const initial=user.avatar||user.username[0].toUpperCase();
   document.getElementById('nav-auth-area').innerHTML=
-    '<a href="/profile" class="nav-avatar" title="My Profile — '+user.username+'">'+initial+'</a>';
+    '<a href="/profile" class="nav-avatar" title="My Profile">'+initial+'</a>';
   if(document.getElementById('mob-login-link'))document.getElementById('mob-login-link').style.display='none';
   if(document.getElementById('mob-profile-link'))document.getElementById('mob-profile-link').style.display='';
 }
@@ -1080,7 +1080,7 @@ function loadStories(){
       '<div><div style="font-weight:800;font-size:.9rem;color:var(--dark)">'+x.name+'</div><div style="font-size:.75rem;color:var(--muted)">'+x.date+'</div></div></div>'+
       (x.milestone?'<span class="tag tag-teal" style="margin-bottom:.85rem;display:inline-flex">\uD83C\uDFC6 '+x.milestone+'</span>':'')+
       '<p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1.1rem">'+x.story+'</p>'+
-      '<button class="like-btn" onclick="likeIt(\'story\','+x.id+',this)"><i class="fas fa-heart"></i> <span>'+x.likes+'</span></button></div>'
+      '<button class="like-btn" onclick="likeIt(&apos;story&apos;,'+x.id+',this)"><i class="fas fa-heart"></i> <span>'+x.likes+'</span></button></div>'
     ).join('');
   });
 }
@@ -1105,7 +1105,7 @@ function loadMs(){
         '<span style="display:inline-block;background:rgba(0,0,0,.05);color:var(--mid);font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:8px;margin-bottom:.7rem">'+lbl+'</span>'+
         '<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--dark);margin-bottom:.55rem;font-weight:700">'+m.milestone+'</div>'+
         (m.description?'<p style="color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:.9rem">'+m.description+'</p>':'')+
-        '<button class="like-btn" onclick="likeIt(\'milestone\','+m.id+',this)"><i class="fas fa-fire"></i> <span>'+m.likes+'</span> Celebrate</button>'+
+        '<button class="like-btn" onclick="likeIt(&apos;milestone&apos;,'+m.id+',this)"><i class="fas fa-fire"></i> <span>'+m.likes+'</span> Celebrate</button>'+
         '</div>';
     }).join('');
   });
@@ -1127,7 +1127,7 @@ function loadQ(){
         '<span style="font-size:1.2rem;flex-shrink:0">❓</span>'+
         '<p style="font-family:Playfair Display,serif;font-size:.98rem;color:var(--dark);font-weight:600;line-height:1.55;margin:0">'+q.question+'</p></div>'+
         '<div style="display:flex;gap:.7rem;align-items:center;flex-wrap:wrap">'+
-        '<button class="like-btn" onclick="likeIt(\'question\','+q.id+',this)"><i class="fas fa-heart"></i> <span>'+q.likes+'</span> Helpful</button>'+
+        '<button class="like-btn" onclick="likeIt(&apos;question&apos;,'+q.id+',this)"><i class="fas fa-heart"></i> <span>'+q.likes+'</span> Helpful</button>'+
         '<span style="color:var(--muted);font-size:.8rem"><i class="fas fa-comment"></i> '+q.answers+' answer'+(q.answers!==1?'s':'')+'</span>'+
         '</div></div>';
     }).join('');
@@ -1192,7 +1192,7 @@ function renderFb(){
     '<span class="tag '+(catT[p.cat]||'tag-gold')+'">'+(catL[p.cat]||p.cat)+'</span></div>'+
     '<p style="color:var(--muted);font-size:.91rem;line-height:1.7;margin-bottom:.9rem">'+p.text+'</p>'+
     '<div style="display:flex;gap:.8rem"><button class="like-btn"><i class="fas fa-comment"></i> '+p.replies+' replies</button>'+
-    '<button class="like-btn" onclick="var c=this.classList.contains(\'liked\');this.classList.toggle(\'liked\');this.querySelector(\'span\').textContent=parseInt(this.querySelector(\'span\').textContent)+(c?-1:1)"><i class="fas fa-heart"></i> <span>0</span></button></div></div>'
+    '<button class="like-btn" data-fblike="true"><i class="fas fa-heart"></i> <span>0</span></button></div></div>'
   ).join('');
 }
 function subFb(){
@@ -1202,6 +1202,15 @@ function subFb(){
   document.getElementById('fbName').value='';document.getElementById('fbText').value='';
   renderFb();showToast('💙 Posted! The community is here for you.','s');
 }
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('[data-fblike]');
+  if(!btn)return;
+  if(btn.classList.contains('liked'))return;
+  btn.classList.add('liked');
+  var sp=btn.querySelector('span');
+  sp.textContent=parseInt(sp.textContent)+1;
+  showToast('💙 Thanks for the support!','s');
+});
 loadStories();loadMs();loadQ();renderFb();
 </script>
 `)))
