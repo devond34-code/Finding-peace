@@ -263,11 +263,17 @@ const stories: any[] = [
 ]
 
 const milestones: any[] = [
-  { id:1, name:"Alex R.", avatar:"A", milestone:"1 Year Sober 🎉", description:"One full year! Never thought I'd say that. To anyone reading — it IS possible.", date:"April 1, 2025", likes:89 },
-  { id:2, name:"Devon K.", avatar:"D", milestone:"1 Week No Social Media", description:"Digital detox complete. My anxiety dropped SO much.", date:"March 30, 2025", likes:23 },
-  { id:3, name:"Priya S.", avatar:"P", milestone:"90 Days Clean 💪", description:"90 days. One day at a time. Still here. Still fighting.", date:"March 27, 2025", likes:71 },
-  { id:4, name:"Chris B.", avatar:"C", milestone:"Started Therapy", description:"Finally asked for help. It took everything I had. But I did it.", date:"March 22, 2025", likes:55 },
-  { id:5, name:"River T.", avatar:"R", milestone:"First AA Meeting 🌿", description:"Shook the whole time. Didn't say a word. But I showed up.", date:"March 18, 2025", likes:102 },
+  { id:1, name:"Alex R.", avatar:"A", milestone:"1 Year Sober 🎉", description:"One full year! Never thought I'd say that. To anyone reading — it IS possible.", date:"April 1, 2025", likes:89, category:"sobriety" },
+  { id:2, name:"Devon K.", avatar:"D", milestone:"1 Week No Social Media", description:"Digital detox complete. My anxiety dropped SO much.", date:"March 30, 2025", likes:23, category:"personal" },
+  { id:3, name:"Priya S.", avatar:"P", milestone:"90 Days Clean 💪", description:"90 days. One day at a time. Still here. Still fighting.", date:"March 27, 2025", likes:71, category:"sobriety" },
+  { id:4, name:"Chris B.", avatar:"C", milestone:"Started Therapy", description:"Finally asked for help. It took everything I had. But I did it.", date:"March 22, 2025", likes:55, category:"therapy" },
+  { id:5, name:"River T.", avatar:"R", milestone:"First AA Meeting 🌿", description:"Shook the whole time. Didn't say a word. But I showed up.", date:"March 18, 2025", likes:102, category:"sobriety" },
+]
+
+const questions: any[] = [
+  { id:1, name:"Anonymous", avatar:"A", question:"How do you handle cravings at 2am when there's no one to call?", category:"cravings", date:"April 2, 2025", likes:14, answers:5 },
+  { id:2, name:"Jordan M.", avatar:"J", question:"What's the first thing you did when you decided to get sober? I'm on day 1 and don't know where to start.", category:"getting-started", date:"March 31, 2025", likes:22, answers:9 },
+  { id:3, name:"Anonymous", avatar:"A", question:"Does the loneliness ever go away? Early recovery feels so isolating.", category:"emotions", date:"March 28, 2025", likes:37, answers:11 },
 ]
 
 // ─── HOME ────────────────────────────────────────────────────────────
@@ -739,12 +745,29 @@ app.get('/community', c => c.html(page("Community", '/community', `
     </div>
 
     <div id="t-milestones" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.8rem;flex-wrap:wrap;gap:1rem">
-        <div><h2 class="section-title" style="font-size:1.75rem">Milestones &amp; <span>Wins</span></h2><p style="color:var(--muted);font-size:.88rem;margin-top:.25rem">Every win counts. Every. Single. One.</p></div>
-        <button onclick="openModal('msMod')" class="btn btn-teal"><i class="fas fa-trophy"></i> Share a Milestone</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem">
+        <div><h2 class="section-title" style="font-size:1.75rem">Milestones &amp; <span>Questions</span></h2><p style="color:var(--muted);font-size:.88rem;margin-top:.25rem">Celebrate wins. Ask questions. We're all in this together.</p></div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button onclick="openModal('msMod')" class="btn btn-teal"><i class="fas fa-trophy"></i> Share a Win</button>
+          <button onclick="openModal('qMod')" class="btn btn-primary"><i class="fas fa-question-circle"></i> Ask a Question</button>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:1.2rem" id="msGrid">
-        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">🏆 Loading milestones...</div>
+
+      <div style="display:inline-flex;background:#fff;border-radius:24px;padding:.28rem;border:1.5px solid var(--border);gap:.22rem;margin-bottom:1.6rem">
+        <button class="tab-btn active" id="ms-sub-wins" onclick="swMsSub('wins',this)">🏆 Wins &amp; Milestones</button>
+        <button class="tab-btn" id="ms-sub-questions" onclick="swMsSub('questions',this)">❓ Community Questions</button>
+      </div>
+
+      <div id="ms-wins">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:1.2rem" id="msGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">🏆 Loading milestones...</div>
+        </div>
+      </div>
+
+      <div id="ms-questions" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.2rem" id="qGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">❓ Loading questions...</div>
+        </div>
       </div>
     </div>
 
@@ -789,12 +812,48 @@ app.get('/community', c => c.html(page("Community", '/community', `
   <div class="modal">
     <button class="modal-close" onclick="closeModal('msMod')">✕</button>
     <div style="font-size:1.9rem;margin-bottom:.45rem">🏆</div>
-    <h3>Celebrate a Milestone</h3>
-    <p class="sub">Big or small — it all counts. We're here for it.</p>
-    <div class="form-group"><label class="form-label">Your name</label><input class="form-input" id="msName" placeholder="e.g. Alex or Anonymous"></div>
-    <div class="form-group"><label class="form-label">Your milestone <span style="color:var(--muted)">(required)</span></label><input class="form-input" id="msMile" placeholder="e.g. 1 Year Sober 🎉, First therapy session..."></div>
-    <div class="form-group"><label class="form-label">Tell us about it (optional)</label><textarea class="form-textarea" id="msDesc" placeholder="What does this milestone mean to you?"></textarea></div>
+    <h3>Share a Win or Milestone</h3>
+    <p class="sub">Big or small — it all counts. We are so proud of you.</p>
+    <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="msName" placeholder="e.g. Alex or Anonymous"></div>
+    <div class="form-group"><label class="form-label">Your milestone <span style="color:var(--muted)">(required)</span></label><input class="form-input" id="msMile" placeholder="e.g. 1 Year Sober 🎉, Day 1, Started therapy..."></div>
+    <div class="form-group"><label class="form-label">Category</label>
+      <select class="form-select" id="msCat">
+        <option value="sobriety">🍃 Sobriety / Clean Time</option>
+        <option value="mental-health">💙 Mental Health</option>
+        <option value="therapy">🧠 Started / Continued Therapy</option>
+        <option value="personal">⭐ Personal Growth</option>
+        <option value="social">🤝 Social / Relationships</option>
+        <option value="other">✨ Other Win</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Tell us about it (optional)</label><textarea class="form-textarea" id="msDesc" placeholder="What does this milestone mean to you? How did you get here?"></textarea></div>
     <button onclick="subMs()" class="btn btn-teal" style="width:100%"><i class="fas fa-trophy"></i> Celebrate with Us!</button>
+    <p style="font-size:.76rem;color:var(--muted);margin-top:.9rem;text-align:center">Every step forward matters. You made it here. 🌿</p>
+  </div>
+</div>
+
+<!-- QUESTION MODAL -->
+<div class="modal-overlay" id="qMod">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('qMod')">✕</button>
+    <div style="font-size:1.9rem;margin-bottom:.45rem">❓</div>
+    <h3>Ask the Community</h3>
+    <p class="sub">No question is too small. No judgment here — only support.</p>
+    <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="qName" placeholder="e.g. Jamie or Anonymous"></div>
+    <div class="form-group"><label class="form-label">Category</label>
+      <select class="form-select" id="qCat">
+        <option value="cravings">🔥 Cravings &amp; Triggers</option>
+        <option value="getting-started">🌱 Getting Started / Day 1</option>
+        <option value="emotions">💙 Emotions &amp; Mental Health</option>
+        <option value="relationships">🤝 Relationships &amp; Support System</option>
+        <option value="relapse">🔄 Relapse &amp; Starting Over</option>
+        <option value="treatment">🏥 Treatment &amp; Resources</option>
+        <option value="general">💬 General Question</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Your question <span style="color:var(--muted)">(required)</span></label><textarea class="form-textarea" id="qText" placeholder="Ask anything — this community has been there and will answer with real talk, not judgment." style="min-height:110px"></textarea></div>
+    <button onclick="subQ()" class="btn btn-primary" style="width:100%"><i class="fas fa-paper-plane"></i> Ask the Community</button>
+    <p style="font-size:.76rem;color:var(--muted);margin-top:.9rem;text-align:center">Safe, moderated, and judgment-free. You belong here. 🌿</p>
   </div>
 </div>
 
@@ -818,23 +877,58 @@ function loadStories(){
     ).join('');
   });
 }
+const catColors={sobriety:'var(--teal)',"mental-health":'var(--lav)',therapy:'var(--sage)',personal:'var(--gold)',social:'var(--rose)',other:'var(--orange)',cravings:'var(--rose)',"getting-started":'var(--teal)',emotions:'var(--lav)',relationships:'var(--sage)',relapse:'var(--orange)',treatment:'var(--gold)',general:'var(--mid)'};
+const catLabel={sobriety:'🍃 Sobriety',"mental-health":'💙 Mental Health',therapy:'🧠 Therapy',personal:'⭐ Personal Growth',social:'🤝 Social',other:'✨ Other Win',cravings:'🔥 Cravings',"getting-started":'🌱 Getting Started',emotions:'💙 Emotions',relationships:'🤝 Relationships',relapse:'🔄 Relapse',treatment:'🏥 Treatment',general:'💬 General'};
+function swMsSub(sub,btn){
+  ['wins','questions'].forEach(s=>document.getElementById('ms-'+s).style.display=s===sub?'block':'none');
+  document.querySelectorAll('#t-milestones .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
 function loadMs(){
   fetch('/api/milestones').then(r=>r.json()).then(ms=>{
     const g=document.getElementById('msGrid');
-    if(!ms.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No milestones yet. Be brave! 🏆</div>';return}
-    g.innerHTML=ms.map((m,i)=>'<div class="card" style="padding:1.7rem;position:relative;overflow:hidden">'+
-      '<div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--teal))"></div>'+
-      '<div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem"><div class="avatar '+getAv(i)+'">'+m.avatar+'</div>'+
-      '<div><div style="font-weight:800;font-size:.9rem;color:var(--dark)">'+m.name+'</div><div style="font-size:.75rem;color:var(--muted)">'+m.date+'</div></div></div>'+
-      '<div style="font-family:Playfair Display,serif;font-size:1.08rem;color:var(--dark);margin-bottom:.55rem;font-weight:700">'+m.milestone+'</div>'+
-      (m.description?'<p style="color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:.9rem">'+m.description+'</p>':'')+
-      '<button class="like-btn" onclick="likeIt(\'milestone\','+m.id+',this)"><i class="fas fa-fire"></i> <span>'+m.likes+'</span></button></div>'
-    ).join('');
+    if(!ms.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No milestones yet. Be the first! 🏆</div>';return}
+    g.innerHTML=ms.map((m,i)=>{
+      const col=catColors[m.category]||'var(--gold)';
+      const lbl=catLabel[m.category]||'✨ Milestone';
+      return '<div class="card" style="padding:1.7rem;position:relative;overflow:hidden">'+
+        '<div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,'+col+',var(--teal))"></div>'+
+        '<div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem"><div class="avatar '+getAv(i)+'">'+m.avatar+'</div>'+
+        '<div><div style="font-weight:800;font-size:.9rem;color:var(--dark)">'+m.name+'</div><div style="font-size:.75rem;color:var(--muted)">'+m.date+'</div></div></div>'+
+        '<span style="display:inline-block;background:rgba(0,0,0,.05);color:var(--mid);font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:8px;margin-bottom:.7rem">'+lbl+'</span>'+
+        '<div style="font-family:Playfair Display,serif;font-size:1.1rem;color:var(--dark);margin-bottom:.55rem;font-weight:700">'+m.milestone+'</div>'+
+        (m.description?'<p style="color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:.9rem">'+m.description+'</p>':'')+
+        '<button class="like-btn" onclick="likeIt(\'milestone\','+m.id+',this)"><i class="fas fa-fire"></i> <span>'+m.likes+'</span> Celebrate</button>'+
+        '</div>';
+    }).join('');
+  });
+}
+function loadQ(){
+  fetch('/api/questions').then(r=>r.json()).then(qs=>{
+    const g=document.getElementById('qGrid');
+    if(!qs.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No questions yet — be the first to ask! ❓</div>';return}
+    g.innerHTML=qs.map((q,i)=>{
+      const col=catColors[q.category]||'var(--teal)';
+      const lbl=catLabel[q.category]||'💬 Question';
+      return '<div class="card" style="padding:1.7rem;position:relative;overflow:hidden">'+
+        '<div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,'+col+',var(--lav))"></div>'+
+        '<div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem">'+
+        '<div class="avatar '+getAv(i)+'">'+q.avatar+'</div>'+
+        '<div style="flex:1"><div style="font-weight:800;font-size:.9rem;color:var(--dark)">'+q.name+'</div><div style="font-size:.75rem;color:var(--muted)">'+q.date+'</div></div>'+
+        '<span style="display:inline-block;background:rgba(0,0,0,.05);color:var(--mid);font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:8px;white-space:nowrap">'+lbl+'</span></div>'+
+        '<div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.9rem">'+
+        '<span style="font-size:1.2rem;flex-shrink:0">❓</span>'+
+        '<p style="font-family:Playfair Display,serif;font-size:.98rem;color:var(--dark);font-weight:600;line-height:1.55;margin:0">'+q.question+'</p></div>'+
+        '<div style="display:flex;gap:.7rem;align-items:center;flex-wrap:wrap">'+
+        '<button class="like-btn" onclick="likeIt(\'question\','+q.id+',this)"><i class="fas fa-heart"></i> <span>'+q.likes+'</span> Helpful</button>'+
+        '<span style="color:var(--muted);font-size:.8rem"><i class="fas fa-comment"></i> '+q.answers+' answer'+(q.answers!==1?'s':'')+'</span>'+
+        '</div></div>';
+    }).join('');
   });
 }
 function likeIt(type,id,btn){
   if(btn.classList.contains('liked'))return;
-  fetch('/api/'+type+'s/'+id+'/like',{method:'POST'}).then(r=>r.json()).then(d=>{btn.classList.add('liked');btn.querySelector('span').textContent=d.likes;showToast('💙 Thanks for the love!','s')});
+  fetch('/api/'+type+'s/'+id+'/like',{method:'POST'}).then(r=>r.json()).then(d=>{btn.classList.add('liked');btn.querySelector('span').textContent=d.likes;showToast(type==='question'?'💙 Marked as helpful!':'💙 Thanks for the love!','s')});
 }
 function subStory(){
   const name=document.getElementById('sName').value.trim(),story=document.getElementById('sText').value.trim(),milestone=document.getElementById('sMile').value.trim();
@@ -844,10 +938,17 @@ function subStory(){
     .catch(()=>showToast('Something went wrong. Try again.','e'));
 }
 function subMs(){
-  const name=document.getElementById('msName').value.trim(),milestone=document.getElementById('msMile').value.trim(),description=document.getElementById('msDesc').value.trim();
+  const name=document.getElementById('msName').value.trim(),milestone=document.getElementById('msMile').value.trim(),description=document.getElementById('msDesc').value.trim(),category=document.getElementById('msCat').value;
   if(!milestone){showToast('What milestone are you celebrating? 🏆','e');return}
-  fetch('/api/milestones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',milestone,description})})
-    .then(r=>r.json()).then(()=>{closeModal('msMod');showToast('🎉 Milestone shared! We are SO proud!','s');document.getElementById('msName').value='';document.getElementById('msMile').value='';document.getElementById('msDesc').value='';loadMs()})
+  fetch('/api/milestones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',milestone,description,category})})
+    .then(r=>r.json()).then(()=>{closeModal('msMod');showToast('🎉 Milestone shared! We are SO proud of you!','s');document.getElementById('msName').value='';document.getElementById('msMile').value='';document.getElementById('msDesc').value='';loadMs()})
+    .catch(()=>showToast('Something went wrong.','e'));
+}
+function subQ(){
+  const name=document.getElementById('qName').value.trim(),text=document.getElementById('qText').value.trim(),category=document.getElementById('qCat').value;
+  if(!text){showToast('Please type your question 💙','e');return}
+  fetch('/api/questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',question:text,category})})
+    .then(r=>r.json()).then(()=>{closeModal('qMod');showToast('❓ Your question is out there! The community will answer. 💙','s');document.getElementById('qName').value='';document.getElementById('qText').value='';loadQ();swMsSub('questions',document.getElementById('ms-sub-questions'))})
     .catch(()=>showToast('Something went wrong.','e'));
 }
 const fbPosts=[
@@ -877,7 +978,7 @@ function subFb(){
   document.getElementById('fbName').value='';document.getElementById('fbText').value='';
   renderFb();showToast('💙 Posted! The community is here for you.','s');
 }
-loadStories();loadMs();renderFb();
+loadStories();loadMs();loadQ();renderFb();
 </script>
 `)))
 
@@ -1281,6 +1382,28 @@ app.post('/api/milestones', async c => {
 app.post('/api/milestones/:id/like', async c => {
   const m = milestones.find(x => x.id === parseInt(c.req.param('id')))
   if (m) { m.likes++; return c.json({ likes: m.likes }) }
+  return c.json({ error: 'Not found' }, 404)
+})
+
+// ─── QUESTIONS API ─────────────────────────────────────────────────────
+app.get('/api/questions', c => c.json(questions))
+app.post('/api/questions', async c => {
+  const b = await c.req.json()
+  const q = {
+    id: questions.length + 1,
+    name: b.name || 'Anonymous',
+    avatar: (b.name || 'A')[0].toUpperCase(),
+    question: b.question,
+    category: b.category || 'general',
+    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    likes: 0,
+    answers: 0
+  }
+  questions.unshift(q); return c.json(q, 201)
+})
+app.post('/api/questions/:id/like', async c => {
+  const q = questions.find(x => x.id === parseInt(c.req.param('id')))
+  if (q) { q.likes++; return c.json({ likes: q.likes }) }
   return c.json({ error: 'Not found' }, 404)
 })
 
