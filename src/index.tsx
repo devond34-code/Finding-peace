@@ -174,7 +174,7 @@ function nav(active: string) {
 <div class="crisis">🆘 Crisis? Call or text <a href="tel:988">988</a> &nbsp;·&nbsp; Text HELLO to <a href="sms:741741">741741</a> &nbsp;·&nbsp; SAMHSA: <a href="tel:18006624357">1-800-662-4357</a></div>
 <nav class="navbar">
   <a href="/" class="brand">
-    <img src="https://www.genspark.ai/api/files/s/Gzabg75Z" alt="Finding Peace" class="brand-logo" onerror="this.style.display='none'">
+    <img src="/static/devon.svg" alt="Finding Peace" class="brand-logo" onerror="this.style.background='linear-gradient(135deg,#4a9b8e,#c8923a)';this.style.display='flex'">
     <span class="brand-name">Finding Peace</span>
   </a>
   <div class="nav-links">${items}</div>
@@ -526,7 +526,7 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
       <div style="display:flex;flex-direction:column;align-items:center;gap:1.4rem">
         <div style="position:relative">
           <div style="width:270px;height:270px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-l));padding:5px;box-shadow:0 12px 40px rgba(74,155,142,.35)">
-            <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:4px solid #fff">
+            <img src="/static/devon.svg" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:4px solid #fff" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#4a9b8e,#c8923a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.5rem;font-weight:800;font-family:Dancing Script,cursive\'>D</div>'">
           </div>
           <div style="position:absolute;bottom:8px;right:-10px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;border-radius:14px;padding:.45rem .85rem;font-size:.76rem;font-weight:800;box-shadow:0 4px 14px rgba(200,146,58,.4)">🌿 Real. Honest. Healing.</div>
         </div>
@@ -547,7 +547,7 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
       <div class="reveal" style="text-align:center">
         <div style="position:relative;display:inline-block">
           <div style="width:280px;height:280px;border-radius:28px;background:linear-gradient(135deg,var(--teal),var(--teal-l));padding:5px;box-shadow:0 16px 50px rgba(74,155,142,.3);display:inline-block">
-            <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:24px;border:4px solid #fff">
+            <img src="/static/devon.svg" alt="Devon - Finding Peace" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:24px;border:4px solid #fff" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:24px;background:linear-gradient(135deg,#4a9b8e,#c8923a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:3rem;font-weight:800;font-family:Dancing Script,cursive\'>Devon</div>'">
           </div>
           <div style="position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:.55rem 1.2rem;border-radius:30px;font-size:.82rem;font-weight:800;white-space:nowrap;box-shadow:0 6px 20px rgba(44,36,24,.25)">👋 Hey, I'm Devon!</div>
         </div>
@@ -738,8 +738,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
           </a>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">
-          <img src="https://www.genspark.ai/api/files/s/SIGm46tR" alt="Finding Peace logo" style="border-radius:14px;width:100%;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'">
-          <img src="https://www.genspark.ai/api/files/s/yYh5D2hy" alt="Finding Peace logo" style="border-radius:14px;width:100%;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'">
+          <img src="/static/devon.svg" alt="Devon" style="border-radius:14px;width:100%;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'">
         </div>
       </div>
 
@@ -934,7 +933,7 @@ app.get('/community', c => c.html(page("Community", '/community', `
       <span class="tag tag-rose">💙 All Stages Welcome</span>
       <span class="tag tag-gold">🔒 Safe Space</span>
     </div>
-    <div style="display:inline-flex;background:#fff;border-radius:30px;padding:.32rem;border:1.5px solid var(--border);gap:.28rem">
+    <div id="community-tabs" style="display:inline-flex;background:#fff;border-radius:30px;padding:.32rem;border:1.5px solid var(--border);gap:.28rem">
       <button class="tab-btn active" onclick="swTab('stories',this)">📖 Stories</button>
       <button class="tab-btn" onclick="swTab('milestones',this)">🏆 Milestones</button>
       <button class="tab-btn" onclick="swTab('feedback',this)">💬 Ask for Feedback</button>
@@ -1070,7 +1069,7 @@ const avCls=['av-gold','av-teal','av-rose','av-sage','av-lav','av-or'];
 function getAv(i){return avCls[i%avCls.length]}
 function swTab(tab,btn){
   ['stories','milestones','feedback'].forEach(t=>document.getElementById('t-'+t).style.display=t===tab?'block':'none');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('#community-tabs .tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
 }
 function loadStories(){
   fetch('/api/stories').then(r=>r.json()).then(s=>{
@@ -1504,7 +1503,7 @@ app.get('/links', c => c.html(page("Links", '/links', `
   <div style="position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(74,155,142,.18) 0%,transparent 50%),radial-gradient(circle at 75% 50%,rgba(200,146,58,.12) 0%,transparent 50%)"></div>
   <div class="container" style="position:relative;z-index:1">
     <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-l));margin:0 auto 1.2rem;padding:4px;box-shadow:0 8px 30px rgba(74,155,142,.4)">
-      <img src="https://www.genspark.ai/api/files/s/Ujh6tMdd" alt="Devon" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:3px solid #fff">
+      <img src="/static/devon.svg" alt="Devon" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:3px solid #fff" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#4a9b8e,#c8923a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.2rem;font-weight:800;font-family:Dancing Script,cursive\'>D</div>'">
     </div>
     <h1 style="font-family:'Dancing Script',cursive;font-size:2.8rem;color:#fff;margin-bottom:.4rem">Finding Peace</h1>
     <p style="color:rgba(255,255,255,.6);font-size:.95rem;margin-bottom:.5rem">with Devon 🌿</p>
