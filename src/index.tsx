@@ -132,6 +132,20 @@ body{font-family:'Nunito',sans-serif;background:var(--warm);color:var(--dark);mi
 .tab-btn{padding:.55rem 1.2rem;border-radius:24px;border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.86rem;color:var(--muted);cursor:pointer;transition:all .2s}
 .tab-btn:hover{color:var(--gold)}
 .tab-btn.active{background:var(--gold);color:#fff;box-shadow:0 3px 10px rgba(200,146,58,.3)}
+/* Auth */
+.nav-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--gold));color:#fff;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--gold-l);transition:all .2s;text-decoration:none}
+.nav-avatar:hover{transform:scale(1.08);box-shadow:0 3px 12px rgba(200,146,58,.35)}
+.nav-login{display:inline-flex;align-items:center;gap:.4rem;background:rgba(200,146,58,.12);border:1.5px solid var(--gold-l);color:var(--gold);text-decoration:none;padding:.38rem .95rem;border-radius:20px;font-size:.83rem;font-weight:800;cursor:pointer;transition:all .2s}
+.nav-login:hover{background:var(--gold);color:#fff}
+.auth-tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:.7rem;text-align:center;font-weight:800;font-size:.9rem;color:var(--muted);cursor:pointer;border:none;background:none;font-family:'Nunito',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.profile-stat{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center}
+.profile-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1}
+.profile-stat-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+.profile-section-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--border)}
+.sober-ring{width:140px;height:140px;border-radius:50%;background:conic-gradient(var(--teal) var(--pct,0%),var(--border) 0%);display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative}
+.sober-ring-inner{width:110px;height:110px;border-radius:50%;background:var(--warm);display:flex;flex-direction:column;align-items:center;justify-content:center}
 `
 
 const fonts = `
@@ -164,15 +178,125 @@ function nav(active: string) {
     <span class="brand-name">Finding Peace</span>
   </a>
   <div class="nav-links">${items}</div>
-  <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} TikTok</a>
+  <div style="display:flex;align-items:center;gap:.6rem">
+    <span id="nav-auth-area">
+      <button onclick="openModal('authMod')" class="nav-login"><i class="fas fa-user"></i> Sign In</button>
+    </span>
+    <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} TikTok</a>
+  </div>
   <button class="hamburger" onclick="document.getElementById('mob').classList.toggle('open')" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 <div class="mob-menu" id="mob">
   ${items}
+  <a href="/profile" class="nav-link" id="mob-profile-link" style="display:none"><i class="fas fa-user-circle"></i> My Profile</a>
+  <button onclick="openModal('authMod')" class="nav-link" id="mob-login-link" style="text-align:left;width:100%;background:none;border:none;cursor:pointer;font-family:Nunito,sans-serif"><i class="fas fa-sign-in-alt"></i> Sign In / Join</button>
   <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="nav-tik">${tiktokIcon} Follow on TikTok</a>
-</div>`
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authMod">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('authMod')">✕</button>
+    <div style="text-align:center;margin-bottom:1.2rem">
+      <div style="font-size:2rem;margin-bottom:.3rem">🌿</div>
+      <h3 style="margin-bottom:.15rem">Welcome to Finding Peace</h3>
+      <p style="color:var(--muted);font-size:.85rem">Real talk. Real community. Real recovery.</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="swAuthTab('login',this)">Sign In</button>
+      <button class="auth-tab" onclick="swAuthTab('register',this)">Join Free</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="auth-login">
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPw" type="password" placeholder="Your password" autocomplete="current-password"></div>
+      <div id="loginErr" style="color:var(--rose);font-size:.82rem;margin-bottom:.8rem;display:none"></div>
+      <button onclick="doLogin()" class="btn btn-primary" style="width:100%"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+      <p style="text-align:center;margin-top:.9rem;font-size:.82rem;color:var(--muted)">No account? <button onclick="swAuthTab('register',document.querySelectorAll('.auth-tab')[1])" style="background:none;border:none;color:var(--gold);font-weight:800;cursor:pointer;font-size:.82rem">Join free →</button></p>
+    </div>
+    <!-- REGISTER -->
+    <div id="auth-register" style="display:none">
+      <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="regUser" placeholder="e.g. PeacefulJourney" autocomplete="username"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="regEmail" type="email" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="regPw" type="password" placeholder="Choose a password" autocomplete="new-password"></div>
+      <div class="form-group"><label class="form-label">Recovery Goal <span style="color:var(--muted)">(optional)</span></label>
+        <select class="form-select" id="regGoal">
+          <option value="">Prefer not to say</option>
+          <option value="sobriety">🍃 Sobriety / Substance Recovery</option>
+          <option value="mental-health">💙 Mental Health & Wellness</option>
+          <option value="both">🌿 Both</option>
+          <option value="support">🤝 Supporting a Loved One</option>
+          <option value="exploring">✨ Just Exploring</option>
+        </select>
+      </div>
+      <div id="regErr" style="color:var(--rose);font-size:.82rem;margin-bottom:.8rem;display:none"></div>
+      <button onclick="doRegister()" class="btn btn-teal" style="width:100%"><i class="fas fa-heart"></i> Create My Account</button>
+      <p style="text-align:center;margin-top:.9rem;font-size:.78rem;color:var(--muted)">By joining you agree to keep this a safe, judgment-free space. 🌿</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── GLOBAL AUTH ───────────────────────────────────────────────────────
+function swAuthTab(tab,btn){
+  ['login','register'].forEach(t=>document.getElementById('auth-'+t).style.display=t===tab?'block':'none');
+  document.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+}
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pw=document.getElementById('loginPw').value;
+  const err=document.getElementById('loginErr');
+  err.style.display='none';
+  fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})})
+    .then(r=>r.json()).then(d=>{
+      if(d.error){err.textContent=d.error;err.style.display='block';return}
+      localStorage.setItem('fp_token',d.token);localStorage.setItem('fp_user',JSON.stringify(d.user));
+      closeModal('authMod');updateNavAuth(d.user);showToast('💙 Welcome back, '+d.user.username+'!','s');
+    }).catch(()=>{err.textContent='Something went wrong. Try again.';err.style.display='block'});
+}
+function doRegister(){
+  const username=document.getElementById('regUser').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pw=document.getElementById('regPw').value;
+  const recoveryGoal=document.getElementById('regGoal').value;
+  const err=document.getElementById('regErr');
+  err.style.display='none';
+  if(!username||!email||!pw){err.textContent='Please fill in all fields.';err.style.display='block';return}
+  fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password:pw,recoveryGoal})})
+    .then(r=>r.json()).then(d=>{
+      if(d.error){err.textContent=d.error;err.style.display='block';return}
+      localStorage.setItem('fp_token',d.token);localStorage.setItem('fp_user',JSON.stringify(d.user));
+      closeModal('authMod');updateNavAuth(d.user);showToast('🌿 Welcome to Finding Peace, '+d.user.username+'!','s');
+    }).catch(()=>{err.textContent='Something went wrong. Try again.';err.style.display='block'});
+}
+function updateNavAuth(user){
+  if(!user){
+    document.getElementById('nav-auth-area').innerHTML='<button onclick="openModal(\\'authMod\\')" class="nav-login"><i class="fas fa-user"></i> Sign In</button>';
+    if(document.getElementById('mob-login-link'))document.getElementById('mob-login-link').style.display='';
+    if(document.getElementById('mob-profile-link'))document.getElementById('mob-profile-link').style.display='none';
+    return;
+  }
+  const initial=user.avatar||user.username[0].toUpperCase();
+  document.getElementById('nav-auth-area').innerHTML=
+    '<a href="/profile" class="nav-avatar" title="My Profile — '+user.username+'">'+initial+'</a>';
+  if(document.getElementById('mob-login-link'))document.getElementById('mob-login-link').style.display='none';
+  if(document.getElementById('mob-profile-link'))document.getElementById('mob-profile-link').style.display='';
+}
+// init on every page load
+(function(){
+  const tok=localStorage.getItem('fp_token');
+  const cached=localStorage.getItem('fp_user');
+  if(tok&&cached){
+    try{updateNavAuth(JSON.parse(cached));}catch(e){}
+    fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+tok}}).then(r=>r.ok?r.json():null).then(u=>{
+      if(u){localStorage.setItem('fp_user',JSON.stringify(u));updateNavAuth(u);}
+      else{localStorage.removeItem('fp_token');localStorage.removeItem('fp_user');updateNavAuth(null);}
+    });
+  }
+})();
+</script>`
 }
 
 function footer() {
@@ -196,6 +320,7 @@ function footer() {
       <a href="/merch">🛍️ Merch Shop</a>
       <a href="/resources">Resources</a>
       <a href="/links">🔗 All My Links</a>
+      <a href="/profile">👤 My Profile</a>
     </div>
     <div class="footer-col">
       <h4>Get Help Now</h4>
@@ -253,6 +378,92 @@ ${scripts()}
 </body>
 </html>`
 }
+
+// ─── AUTH ────────────────────────────────────────────────────────────
+const users: any[] = []        // { id, username, email, passwordHash, avatar, bio, soberDate, joinDate, recoveryGoal }
+const sessions: Map<string, number> = new Map() // token -> userId
+
+function hashPassword(pw: string): string {
+  // Simple hash (no Node crypto in CF Workers — use Web Crypto style XOR+base64)
+  let h = 0
+  for (let i = 0; i < pw.length; i++) { h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0 }
+  return 'h' + Math.abs(h).toString(36) + pw.length.toString(36)
+}
+function genToken(): string {
+  return Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2)
+}
+function getUser(c: any): any | null {
+  const auth = c.req.header('Authorization') || ''
+  const token = auth.replace('Bearer ', '').trim()
+  if (!token) return null
+  const uid = sessions.get(token)
+  if (!uid) return null
+  return users.find(u => u.id === uid) || null
+}
+
+// Auth API
+app.post('/api/auth/register', async c => {
+  const b = await c.req.json()
+  const { username, email, password, soberDate, recoveryGoal } = b
+  if (!username || !email || !password) return c.json({ error: 'Username, email and password required' }, 400)
+  if (users.find(u => u.email === email)) return c.json({ error: 'Email already registered' }, 409)
+  if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) return c.json({ error: 'Username taken' }, 409)
+  const user = {
+    id: users.length + 1,
+    username: username.trim(),
+    email: email.trim().toLowerCase(),
+    passwordHash: hashPassword(password),
+    avatar: username[0].toUpperCase(),
+    bio: '',
+    soberDate: soberDate || null,
+    recoveryGoal: recoveryGoal || '',
+    joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    likedStories: [] as number[],
+    likedMilestones: [] as number[],
+    likedQuestions: [] as number[],
+  }
+  users.push(user)
+  const token = genToken()
+  sessions.set(token, user.id)
+  const { passwordHash, ...safe } = user
+  return c.json({ token, user: safe }, 201)
+})
+
+app.post('/api/auth/login', async c => {
+  const b = await c.req.json()
+  const { email, password } = b
+  const user = users.find(u => u.email === email?.trim().toLowerCase())
+  if (!user || user.passwordHash !== hashPassword(password)) return c.json({ error: 'Invalid email or password' }, 401)
+  const token = genToken()
+  sessions.set(token, user.id)
+  const { passwordHash, ...safe } = user
+  return c.json({ token, user: safe })
+})
+
+app.post('/api/auth/logout', c => {
+  const auth = c.req.header('Authorization') || ''
+  const token = auth.replace('Bearer ', '').trim()
+  sessions.delete(token)
+  return c.json({ ok: true })
+})
+
+app.get('/api/auth/me', c => {
+  const user = getUser(c)
+  if (!user) return c.json({ error: 'Not authenticated' }, 401)
+  const { passwordHash, ...safe } = user
+  return c.json(safe)
+})
+
+app.patch('/api/auth/profile', async c => {
+  const user = getUser(c)
+  if (!user) return c.json({ error: 'Not authenticated' }, 401)
+  const b = await c.req.json()
+  if (b.bio !== undefined) user.bio = b.bio.slice(0, 200)
+  if (b.soberDate !== undefined) user.soberDate = b.soberDate
+  if (b.recoveryGoal !== undefined) user.recoveryGoal = b.recoveryGoal
+  const { passwordHash, ...safe } = user
+  return c.json(safe)
+})
 
 // ─── DATA ────────────────────────────────────────────────────────────
 const stories: any[] = [
@@ -799,7 +1010,6 @@ app.get('/community', c => c.html(page("Community", '/community', `
     <div style="font-size:1.9rem;margin-bottom:.45rem">📖</div>
     <h3>Share Your Story</h3>
     <p class="sub">You don't need to have it figured out. Just be honest.</p>
-    <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="sName" placeholder="e.g. Jamie M. or Anonymous"></div>
     <div class="form-group"><label class="form-label">Your milestone (optional)</label><input class="form-input" id="sMile" placeholder="e.g. 6 months sober, started therapy..."></div>
     <div class="form-group"><label class="form-label">Your story <span style="color:var(--muted)">(required)</span></label><textarea class="form-textarea" id="sText" placeholder="Whatever you want to share — all of it is welcome." style="min-height:120px"></textarea></div>
     <button onclick="subStory()" class="btn btn-primary" style="width:100%"><i class="fas fa-heart"></i> Share with the Community</button>
@@ -814,7 +1024,6 @@ app.get('/community', c => c.html(page("Community", '/community', `
     <div style="font-size:1.9rem;margin-bottom:.45rem">🏆</div>
     <h3>Share a Win or Milestone</h3>
     <p class="sub">Big or small — it all counts. We are so proud of you.</p>
-    <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="msName" placeholder="e.g. Alex or Anonymous"></div>
     <div class="form-group"><label class="form-label">Your milestone <span style="color:var(--muted)">(required)</span></label><input class="form-input" id="msMile" placeholder="e.g. 1 Year Sober 🎉, Day 1, Started therapy..."></div>
     <div class="form-group"><label class="form-label">Category</label>
       <select class="form-select" id="msCat">
@@ -839,7 +1048,6 @@ app.get('/community', c => c.html(page("Community", '/community', `
     <div style="font-size:1.9rem;margin-bottom:.45rem">❓</div>
     <h3>Ask the Community</h3>
     <p class="sub">No question is too small. No judgment here — only support.</p>
-    <div class="form-group"><label class="form-label">Your name (or stay anonymous)</label><input class="form-input" id="qName" placeholder="e.g. Jamie or Anonymous"></div>
     <div class="form-group"><label class="form-label">Category</label>
       <select class="form-select" id="qCat">
         <option value="cravings">🔥 Cravings &amp; Triggers</option>
@@ -928,28 +1136,45 @@ function loadQ(){
 }
 function likeIt(type,id,btn){
   if(btn.classList.contains('liked'))return;
-  fetch('/api/'+type+'s/'+id+'/like',{method:'POST'}).then(r=>r.json()).then(d=>{btn.classList.add('liked');btn.querySelector('span').textContent=d.likes;showToast(type==='question'?'💙 Marked as helpful!':'💙 Thanks for the love!','s')});
+  const tok=localStorage.getItem('fp_token');
+  fetch('/api/'+type+'s/'+id+'/like',{method:'POST',headers:tok?{'Authorization':'Bearer '+tok}:{}}).then(r=>r.json()).then(d=>{btn.classList.add('liked');btn.querySelector('span').textContent=d.likes;showToast(type==='question'?'💙 Marked as helpful!':'💙 Thanks for the love!','s')});
+}
+function authHeader(){const t=localStorage.getItem('fp_token');return t?{'Authorization':'Bearer '+t,'Content-Type':'application/json'}:{'Content-Type':'application/json'}}
+function requireLogin(action){
+  if(!localStorage.getItem('fp_token')){showToast('💙 Please sign in to '+action,'e');openModal('authMod');return false}return true;
 }
 function subStory(){
-  const name=document.getElementById('sName').value.trim(),story=document.getElementById('sText').value.trim(),milestone=document.getElementById('sMile').value.trim();
+  if(!requireLogin('share a story'))return;
+  const story=document.getElementById('sText').value.trim(),milestone=document.getElementById('sMile').value.trim();
   if(!story){showToast('Please share something — anything! 💙','e');return}
-  fetch('/api/stories',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',story,milestone})})
-    .then(r=>r.json()).then(()=>{closeModal('storyMod');showToast('🌸 Your story has been shared. Thank you.','s');document.getElementById('sName').value='';document.getElementById('sText').value='';document.getElementById('sMile').value='';loadStories()})
-    .catch(()=>showToast('Something went wrong. Try again.','e'));
+  fetch('/api/stories',{method:'POST',headers:authHeader(),body:JSON.stringify({story,milestone})})
+    .then(r=>r.json()).then(d=>{
+      if(d.error){showToast('⚠️ '+d.error,'e');return}
+      closeModal('storyMod');showToast('🌸 Your story has been shared. Thank you.','s');
+      document.getElementById('sText').value='';document.getElementById('sMile').value='';loadStories()
+    }).catch(()=>showToast('Something went wrong. Try again.','e'));
 }
 function subMs(){
-  const name=document.getElementById('msName').value.trim(),milestone=document.getElementById('msMile').value.trim(),description=document.getElementById('msDesc').value.trim(),category=document.getElementById('msCat').value;
+  if(!requireLogin('share a milestone'))return;
+  const milestone=document.getElementById('msMile').value.trim(),description=document.getElementById('msDesc').value.trim(),category=document.getElementById('msCat').value;
   if(!milestone){showToast('What milestone are you celebrating? 🏆','e');return}
-  fetch('/api/milestones',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',milestone,description,category})})
-    .then(r=>r.json()).then(()=>{closeModal('msMod');showToast('🎉 Milestone shared! We are SO proud of you!','s');document.getElementById('msName').value='';document.getElementById('msMile').value='';document.getElementById('msDesc').value='';loadMs()})
-    .catch(()=>showToast('Something went wrong.','e'));
+  fetch('/api/milestones',{method:'POST',headers:authHeader(),body:JSON.stringify({milestone,description,category})})
+    .then(r=>r.json()).then(d=>{
+      if(d.error){showToast('⚠️ '+d.error,'e');return}
+      closeModal('msMod');showToast('🎉 Milestone shared! We are SO proud of you!','s');
+      document.getElementById('msMile').value='';document.getElementById('msDesc').value='';loadMs()
+    }).catch(()=>showToast('Something went wrong.','e'));
 }
 function subQ(){
-  const name=document.getElementById('qName').value.trim(),text=document.getElementById('qText').value.trim(),category=document.getElementById('qCat').value;
+  if(!requireLogin('ask a question'))return;
+  const text=document.getElementById('qText').value.trim(),category=document.getElementById('qCat').value;
   if(!text){showToast('Please type your question 💙','e');return}
-  fetch('/api/questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name||'Anonymous',question:text,category})})
-    .then(r=>r.json()).then(()=>{closeModal('qMod');showToast('❓ Your question is out there! The community will answer. 💙','s');document.getElementById('qName').value='';document.getElementById('qText').value='';loadQ();swMsSub('questions',document.getElementById('ms-sub-questions'))})
-    .catch(()=>showToast('Something went wrong.','e'));
+  fetch('/api/questions',{method:'POST',headers:authHeader(),body:JSON.stringify({question:text,category})})
+    .then(r=>r.json()).then(d=>{
+      if(d.error){showToast('⚠️ '+d.error,'e');return}
+      closeModal('qMod');showToast('❓ Your question is out there! The community will answer. 💙','s');
+      document.getElementById('qText').value='';loadQ();swMsSub('questions',document.getElementById('ms-sub-questions'))
+    }).catch(()=>showToast('Something went wrong.','e'));
 }
 const fbPosts=[
   {id:1,name:"Someone going through it",cat:"advice",text:"How do you handle cravings when they hit at 2am and there's no one to call? Some nights feel impossible.",date:"Today",replies:4},
@@ -1361,38 +1586,270 @@ app.get('/links', c => c.html(page("Links", '/links', `
 app.get('/stories', c => c.redirect('/community'))
 app.get('/milestones', c => c.redirect('/community'))
 
+// ─── PROFILE PAGE ─────────────────────────────────────────────────────
+app.get('/profile', c => c.html(page('My Profile', '/profile', `
+<section style="background:linear-gradient(155deg,#fdf6ec,#eef5f0);padding:3rem 1.5rem 2rem;position:relative;overflow:hidden">
+  <div class="blob" style="width:300px;height:300px;background:var(--teal);top:-60px;right:-60px"></div>
+  <div class="blob" style="width:250px;height:250px;background:var(--gold);bottom:-60px;left:-60px"></div>
+  <div class="container" style="position:relative;z-index:1" id="profileHero">
+    <div style="text-align:center;padding:3rem 0">
+      <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--gold));color:#fff;font-size:1.4rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">🔒</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--dark);margin-bottom:.5rem">Sign in to view your profile</h2>
+      <p style="color:var(--muted);margin-bottom:1.5rem">Track your journey, milestones, and posts all in one place.</p>
+      <button onclick="openModal('authMod')" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Sign In / Join</button>
+    </div>
+  </div>
+</section>
+<section class="section" style="background:var(--cream);display:none" id="profileContent">
+  <div class="container" style="max-width:860px">
+
+    <!-- HEADER CARD -->
+    <div class="card" style="padding:2rem;margin-bottom:2rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--gold));color:#fff;font-size:1.9rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0" id="pAvatar">?</div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--dark);font-weight:700" id="pUsername"></div>
+        <div style="color:var(--muted);font-size:.83rem;margin:.25rem 0" id="pJoinDate"></div>
+        <div style="color:var(--mid);font-size:.9rem;margin-top:.4rem;font-style:italic" id="pBio"></div>
+        <div style="margin-top:.8rem;display:flex;gap:.6rem;flex-wrap:wrap">
+          <button onclick="openModal('editProfileMod')" class="btn btn-ghost" style="font-size:.82rem;padding:.45rem 1rem"><i class="fas fa-edit"></i> Edit Profile</button>
+          <button onclick="doLogout()" class="btn btn-ghost" style="font-size:.82rem;padding:.45rem 1rem;color:var(--rose)"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0" id="pRecoveryGoal"></div>
+    </div>
+
+    <!-- SOBER TRACKER -->
+    <div class="card" style="padding:1.8rem;margin-bottom:2rem" id="soberSection">
+      <h3 class="profile-section-title">🌿 Recovery Tracker</h3>
+      <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap">
+        <div class="sober-ring" id="soberRing" style="--pct:0%">
+          <div class="sober-ring-inner">
+            <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--teal);line-height:1" id="soberDays">—</div>
+            <div style="font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">days</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:180px">
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--dark);font-weight:700;margin-bottom:.3rem" id="soberLabel">Set your start date</div>
+          <div style="color:var(--muted);font-size:.85rem;line-height:1.6" id="soberSub"></div>
+          <div style="margin-top:.9rem">
+            <label style="font-size:.78rem;font-weight:800;color:var(--mid);display:block;margin-bottom:.3rem">Sobriety / Recovery Start Date</label>
+            <input type="date" id="soberDateInput" class="form-input" style="max-width:220px" onchange="saveSoberDate(this.value)">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem" id="soberStats"></div>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem" id="statsRow">
+      <div class="profile-stat"><div class="profile-stat-num" id="statStories">0</div><div class="profile-stat-label">Stories Shared</div></div>
+      <div class="profile-stat"><div class="profile-stat-num" id="statMilestones">0</div><div class="profile-stat-label">Milestones</div></div>
+      <div class="profile-stat"><div class="profile-stat-num" id="statQuestions">0</div><div class="profile-stat-label">Questions Asked</div></div>
+      <div class="profile-stat"><div class="profile-stat-num" id="statLikes">0</div><div class="profile-stat-label">Hearts Given</div></div>
+    </div>
+
+    <!-- MY POSTS TABS -->
+    <div class="card" style="padding:1.8rem">
+      <h3 class="profile-section-title">📖 My Activity</h3>
+      <div style="display:inline-flex;background:var(--cream);border-radius:24px;padding:.28rem;gap:.2rem;margin-bottom:1.4rem;flex-wrap:wrap">
+        <button class="tab-btn active" onclick="swProfileTab('myStories',this)">📖 My Stories</button>
+        <button class="tab-btn" onclick="swProfileTab('myMilestones',this)">🏆 My Milestones</button>
+        <button class="tab-btn" onclick="swProfileTab('myQuestions',this)">❓ My Questions</button>
+      </div>
+      <div id="myStories"><div style="color:var(--muted);text-align:center;padding:2rem">Loading...</div></div>
+      <div id="myMilestones" style="display:none"><div style="color:var(--muted);text-align:center;padding:2rem">Loading...</div></div>
+      <div id="myQuestions" style="display:none"><div style="color:var(--muted);text-align:center;padding:2rem">Loading...</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-overlay" id="editProfileMod">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('editProfileMod')">✕</button>
+    <div style="font-size:1.9rem;margin-bottom:.45rem">✏️</div>
+    <h3>Edit Your Profile</h3>
+    <p class="sub">Tell your community a little about yourself.</p>
+    <div class="form-group"><label class="form-label">Bio <span style="color:var(--muted)">(max 200 characters)</span></label><textarea class="form-textarea" id="editBio" placeholder="e.g. 18 months sober, NJ native, finding peace one day at a time 🌿" style="min-height:80px" maxlength="200"></textarea></div>
+    <div class="form-group"><label class="form-label">Recovery Goal</label>
+      <select class="form-select" id="editGoal">
+        <option value="">Prefer not to say</option>
+        <option value="sobriety">🍃 Sobriety / Substance Recovery</option>
+        <option value="mental-health">💙 Mental Health & Wellness</option>
+        <option value="both">🌿 Both Sobriety & Mental Health</option>
+        <option value="support">🤝 Supporting a Loved One</option>
+        <option value="exploring">✨ Just Exploring</option>
+      </select>
+    </div>
+    <button onclick="saveProfile()" class="btn btn-teal" style="width:100%"><i class="fas fa-save"></i> Save Changes</button>
+  </div>
+</div>
+
+<script>
+const goalLabels={sobriety:'🍃 Sobriety Recovery','mental-health':'💙 Mental Health',both:'🌿 Both',support:'🤝 Supporting Someone',exploring:'✨ Exploring','':""}
+function swProfileTab(tab,btn){
+  ['myStories','myMilestones','myQuestions'].forEach(t=>{document.getElementById(t).style.display=t===tab?'block':'none'});
+  document.querySelectorAll('#profileContent .tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+}
+function calcSober(dateStr){
+  if(!dateStr)return null;
+  const start=new Date(dateStr),now=new Date();
+  const days=Math.floor((now-start)/(1000*60*60*24));
+  return Math.max(0,days);
+}
+function soberMilestoneLabel(days){
+  if(days>=365*3)return '🏆 3+ Years — Legend Status';
+  if(days>=365)return '🎉 '+Math.floor(days/365)+' Year'+(Math.floor(days/365)>1?'s':'')+' Sober';
+  if(days>=180)return '💪 6+ Months Strong';
+  if(days>=90)return '🌟 90+ Days — Keep Going';
+  if(days>=30)return '🌱 One Month In';
+  if(days>=7)return '✅ One Week Done';
+  if(days>=1)return '🌅 Day '+days;
+  return '🌿 Day One — You Showed Up';
+}
+function renderProfile(user){
+  document.getElementById('profileHero').closest('section').style.display='none';
+  document.getElementById('profileContent').style.display='block';
+  document.getElementById('pAvatar').textContent=user.avatar||user.username[0].toUpperCase();
+  document.getElementById('pUsername').textContent=user.username;
+  document.getElementById('pJoinDate').textContent='Member since '+user.joinDate;
+  document.getElementById('pBio').textContent=user.bio||'No bio yet — add one!';
+  const gl=goalLabels[user.recoveryGoal]||'';
+  document.getElementById('pRecoveryGoal').innerHTML=gl?'<span style="background:var(--teal-p);color:var(--teal);padding:.3rem .8rem;border-radius:12px;font-size:.8rem;font-weight:800">'+gl+'</span>':'';
+  // sober tracker
+  const days=calcSober(user.soberDate);
+  if(user.soberDate)document.getElementById('soberDateInput').value=user.soberDate;
+  if(days!==null){
+    document.getElementById('soberDays').textContent=days;
+    document.getElementById('soberLabel').textContent=soberMilestoneLabel(days);
+    const pct=Math.min(100,Math.round((days/365)*100));
+    document.getElementById('soberRing').style.setProperty('--pct',pct+'%');
+    const weeks=Math.floor(days/7),months=Math.floor(days/30),years=Math.floor(days/365);
+    document.getElementById('soberSub').textContent=weeks+' weeks • '+months+' months • '+years+' year'+(years!==1?'s':'');
+    document.getElementById('soberStats').innerHTML=
+      '<div class="profile-stat"><div class="profile-stat-num" style="font-size:1.3rem">'+days+'</div><div class="profile-stat-label">Days</div></div>'+
+      '<div class="profile-stat"><div class="profile-stat-num" style="font-size:1.3rem">'+weeks+'</div><div class="profile-stat-label">Weeks</div></div>'+
+      '<div class="profile-stat"><div class="profile-stat-num" style="font-size:1.3rem">'+months+'</div><div class="profile-stat-label">Months</div></div>';
+  } else {
+    document.getElementById('soberLabel').textContent='Set your recovery start date to track your journey';
+  }
+  loadMyActivity(user);
+}
+function loadMyActivity(user){
+  const tok=localStorage.getItem('fp_token');
+  const h={'Authorization':'Bearer '+tok,'Content-Type':'application/json'};
+  Promise.all([
+    fetch('/api/stories',{headers:h}).then(r=>r.json()),
+    fetch('/api/milestones',{headers:h}).then(r=>r.json()),
+    fetch('/api/questions',{headers:h}).then(r=>r.json()),
+  ]).then(([st,ms,qs])=>{
+    const myS=st.filter(x=>x.userId===user.id);
+    const myM=ms.filter(x=>x.userId===user.id);
+    const myQ=qs.filter(x=>x.userId===user.id);
+    document.getElementById('statStories').textContent=myS.length;
+    document.getElementById('statMilestones').textContent=myM.length;
+    document.getElementById('statQuestions').textContent=myQ.length;
+    const totalLiked=(user.likedStories||[]).length+(user.likedMilestones||[]).length+(user.likedQuestions||[]).length;
+    document.getElementById('statLikes').textContent=totalLiked;
+    document.getElementById('myStories').innerHTML=myS.length?myS.map(s=>
+      '<div class="card" style="padding:1.3rem;margin-bottom:.8rem">'+
+      '<div style="font-size:.78rem;color:var(--muted);margin-bottom:.4rem">'+s.date+'</div>'+
+      (s.milestone?'<span style="background:var(--teal-p);color:var(--teal);font-size:.72rem;font-weight:800;padding:.15rem .5rem;border-radius:8px;display:inline-block;margin-bottom:.5rem">🏆 '+s.milestone+'</span>':'')+
+      '<p style="color:var(--mid);font-size:.9rem;line-height:1.6">'+s.story+'</p>'+
+      '<div style="margin-top:.7rem;font-size:.78rem;color:var(--muted)"><i class="fas fa-heart"></i> '+s.likes+' hearts</div></div>'
+    ).join(''):'<div style="text-align:center;padding:2.5rem;color:var(--muted)">No stories shared yet.<br><a href="/community" style="color:var(--gold);font-weight:800">Share your first story →</a></div>';
+    document.getElementById('myMilestones').innerHTML=myM.length?myM.map(m=>
+      '<div class="card" style="padding:1.3rem;margin-bottom:.8rem">'+
+      '<div style="font-family:Playfair Display,serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:.3rem">'+m.milestone+'</div>'+
+      (m.description?'<p style="color:var(--muted);font-size:.88rem;line-height:1.5">'+m.description+'</p>':'')+
+      '<div style="margin-top:.6rem;font-size:.78rem;color:var(--muted)">'+m.date+' · <i class="fas fa-fire"></i> '+m.likes+' celebrating</div></div>'
+    ).join(''):'<div style="text-align:center;padding:2.5rem;color:var(--muted)">No milestones shared yet.<br><a href="/community" style="color:var(--teal);font-weight:800">Share a win →</a></div>';
+    document.getElementById('myQuestions').innerHTML=myQ.length?myQ.map(q=>
+      '<div class="card" style="padding:1.3rem;margin-bottom:.8rem">'+
+      '<div style="display:flex;gap:.5rem;align-items:flex-start">'+
+      '<span style="font-size:1.1rem;flex-shrink:0">❓</span>'+
+      '<p style="font-family:Playfair Display,serif;font-size:.95rem;font-weight:600;color:var(--dark);line-height:1.5;margin:0">'+q.question+'</p></div>'+
+      '<div style="margin-top:.6rem;font-size:.78rem;color:var(--muted)">'+q.date+' · <i class="fas fa-comment"></i> '+q.answers+' answers · <i class="fas fa-heart"></i> '+q.likes+' helpful</div></div>'
+    ).join(''):'<div style="text-align:center;padding:2.5rem;color:var(--muted)">No questions asked yet.<br><a href="/community" style="color:var(--gold);font-weight:800">Ask the community →</a></div>';
+  });
+}
+function saveSoberDate(val){
+  const tok=localStorage.getItem('fp_token');
+  fetch('/api/auth/profile',{method:'PATCH',headers:{'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({soberDate:val})})
+    .then(r=>r.json()).then(u=>{renderProfile(u);showToast('🌿 Recovery date saved!','s')});
+}
+function saveProfile(){
+  const tok=localStorage.getItem('fp_token');
+  const bio=document.getElementById('editBio').value.trim();
+  const recoveryGoal=document.getElementById('editGoal').value;
+  fetch('/api/auth/profile',{method:'PATCH',headers:{'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({bio,recoveryGoal})})
+    .then(r=>r.json()).then(u=>{closeModal('editProfileMod');renderProfile(u);showToast('✅ Profile updated!','s')});
+}
+function doLogout(){
+  const tok=localStorage.getItem('fp_token');
+  fetch('/api/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+tok}});
+  localStorage.removeItem('fp_token');localStorage.removeItem('fp_user');
+  window.location.href='/';
+}
+// on load
+const _t=localStorage.getItem('fp_token');
+if(_t){
+  fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+_t}}).then(r=>r.ok?r.json():null).then(u=>{
+    if(u)renderProfile(u);
+    else{localStorage.removeItem('fp_token');localStorage.removeItem('fp_user');}
+  });
+} else {
+  // show login prompt (already visible by default)
+}
+</script>
+`)))
+
 // ─── API ──────────────────────────────────────────────────────────────
 app.get('/api/stories', c => c.json(stories))
 app.post('/api/stories', async c => {
+  const user = getUser(c)
+  if (!user) return c.json({ error: 'Login required to share a story' }, 401)
   const b = await c.req.json()
-  const s = { id: stories.length + 1, name: b.name || 'Anonymous', avatar: (b.name || 'A')[0].toUpperCase(), story: b.story, date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0, milestone: b.milestone || '' }
+  const s = { id: stories.length + 1, userId: user.id, name: user.username, avatar: user.avatar, story: b.story, date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0, milestone: b.milestone || '' }
   stories.unshift(s); return c.json(s, 201)
 })
 app.post('/api/stories/:id/like', async c => {
+  const user = getUser(c)
   const s = stories.find(x => x.id === parseInt(c.req.param('id')))
-  if (s) { s.likes++; return c.json({ likes: s.likes }) }
-  return c.json({ error: 'Not found' }, 404)
+  if (!s) return c.json({ error: 'Not found' }, 404)
+  s.likes++
+  if (user && !user.likedStories.includes(s.id)) user.likedStories.push(s.id)
+  return c.json({ likes: s.likes })
 })
 app.get('/api/milestones', c => c.json(milestones))
 app.post('/api/milestones', async c => {
+  const user = getUser(c)
+  if (!user) return c.json({ error: 'Login required to share a milestone' }, 401)
   const b = await c.req.json()
-  const m = { id: milestones.length + 1, name: b.name || 'Anonymous', avatar: (b.name || 'A')[0].toUpperCase(), milestone: b.milestone, description: b.description || '', date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0 }
+  const m = { id: milestones.length + 1, userId: user.id, name: user.username, avatar: user.avatar, milestone: b.milestone, description: b.description || '', date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0, category: b.category || 'other' }
   milestones.unshift(m); return c.json(m, 201)
 })
 app.post('/api/milestones/:id/like', async c => {
+  const user = getUser(c)
   const m = milestones.find(x => x.id === parseInt(c.req.param('id')))
-  if (m) { m.likes++; return c.json({ likes: m.likes }) }
-  return c.json({ error: 'Not found' }, 404)
+  if (!m) return c.json({ error: 'Not found' }, 404)
+  m.likes++
+  if (user && !user.likedMilestones.includes(m.id)) user.likedMilestones.push(m.id)
+  return c.json({ likes: m.likes })
 })
 
 // ─── QUESTIONS API ─────────────────────────────────────────────────────
 app.get('/api/questions', c => c.json(questions))
 app.post('/api/questions', async c => {
+  const user = getUser(c)
+  if (!user) return c.json({ error: 'Login required to ask a question' }, 401)
   const b = await c.req.json()
   const q = {
     id: questions.length + 1,
-    name: b.name || 'Anonymous',
-    avatar: (b.name || 'A')[0].toUpperCase(),
+    userId: user.id,
+    name: user.username,
+    avatar: user.avatar,
     question: b.question,
     category: b.category || 'general',
     date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
@@ -1402,9 +1859,12 @@ app.post('/api/questions', async c => {
   questions.unshift(q); return c.json(q, 201)
 })
 app.post('/api/questions/:id/like', async c => {
+  const user = getUser(c)
   const q = questions.find(x => x.id === parseInt(c.req.param('id')))
-  if (q) { q.likes++; return c.json({ likes: q.likes }) }
-  return c.json({ error: 'Not found' }, 404)
+  if (!q) return c.json({ error: 'Not found' }, 404)
+  q.likes++
+  if (user && !user.likedQuestions.includes(q.id)) user.likedQuestions.push(q.id)
+  return c.json({ likes: q.likes })
 })
 
 export default app
