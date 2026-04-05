@@ -1361,7 +1361,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Soft, comfy everyday tee. Perfect for spreading peace vibes wherever you go.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $18.80</span>
-            <a href="https://finding-peace-5.myshopify.com/products/unisex-jersey-short-sleeve-tee" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-jersey-short-sleeve-tee" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1376,7 +1376,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Classic heavyweight tee — durable, cozy, and made to last.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $15.83</span>
-            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-cotton-tee" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-cotton-tee" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1393,7 +1393,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Super soft, warm, and cozy. The perfect sweatshirt for healing-era days.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$40.73</span>
-            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-blend™-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/unisex-heavy-blend™-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1409,7 +1409,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">50/50 cotton-poly blend. Cozy and warm for the little peace-seekers.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$43.20</span>
-            <a href="https://finding-peace-5.myshopify.com/products/youth-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/youth-crewneck-sweatshirt" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1425,7 +1425,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Start your morning with peace. Glossy ceramic with a pop of color.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $10.42</span>
-            <a href="https://finding-peace-5.myshopify.com/products/accent-coffee-mug-11-15oz" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/accent-coffee-mug-11-15oz" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1440,7 +1440,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Classic white ceramic mug. Your daily affirmation deserves a good cup.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $8.22</span>
-            <a href="https://finding-peace-5.myshopify.com/products/ceramic-mug-11oz-15oz" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/ceramic-mug-11oz-15oz" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1457,7 +1457,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Ultra-soft plush blanket. For the days when you need to wrap yourself in peace. 🌿</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$38.52</span>
-            <a href="https://finding-peace-5.myshopify.com/products/velveteen-plush-blanket" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/velveteen-plush-blanket" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
@@ -1474,7 +1474,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
           <p style="color:var(--muted);font-size:.83rem;margin-bottom:.9rem">Stick your peace everywhere. Laptops, water bottles, journals — you name it.</p>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">from $2.63</span>
-            <a href="https://finding-peace-5.myshopify.com/products/kiss-cut-stickers" target="_blank" rel="noopener" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
+            <a href="https://finding-peace-5.myshopify.com/products/kiss-cut-stickers" target="_blank" rel="noopener" class="btn btn-teal" style="padding:.5rem 1.1rem;font-size:.82rem">Shop Now</a>
           </div>
         </div>
       </div>
