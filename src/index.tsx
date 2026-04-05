@@ -130,8 +130,8 @@ body{font-family:'Nunito',sans-serif;background:var(--warm);color:var(--dark);mi
 .filter-btn-teal.active{background:var(--sage);border-color:var(--sage);color:#fff}
 /* Tab btns */
 .tab-btn{padding:.55rem 1.2rem;border-radius:24px;border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.86rem;color:var(--muted);cursor:pointer;transition:all .2s}
-.tab-btn:hover{color:var(--gold)}
-.tab-btn.active{background:var(--gold);color:#fff;box-shadow:0 3px 10px rgba(200,146,58,.3)}
+.tab-btn:hover{color:var(--teal)}
+.tab-btn.active{background:var(--teal);color:#fff;box-shadow:0 3px 10px rgba(74,155,142,.3)}
 /* Auth */
 .nav-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--gold));color:#fff;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--gold-l);transition:all .2s;text-decoration:none}
 .nav-avatar:hover{transform:scale(1.08);box-shadow:0 3px 12px rgba(200,146,58,.35)}
