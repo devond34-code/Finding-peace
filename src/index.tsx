@@ -553,7 +553,7 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
         </div>
         <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center">
           <span class="tag tag-teal">📍 New Jersey</span>
-          <span class="tag tag-gold">🐕 Dog Mom to Odin</span>
+          <span class="tag tag-gold">🐕 Dog Mom to Odin &amp; Loki</span>
           <span class="tag tag-rose">💙 Recovery Advocate</span>
         </div>
       </div>
@@ -718,11 +718,11 @@ app.get('/about', c => c.html(page("My Story", '/about', `
 
 <section class="section" style="background:#fff">
   <div class="container">
-    <div style="display:grid;grid-template-columns:320px 1fr;gap:4rem;align-items:start">
+    <div style="display:grid;grid-template-columns:320px 1fr;gap:4rem;align-items:start;min-height:0">
 
       <div class="reveal" style="position:sticky;top:90px" id="about-sidebar">
         <div style="background:linear-gradient(160deg,var(--teal-p),var(--lav-p));border-radius:24px;padding:2.3rem;text-align:center;border:1.5px solid var(--border)">
-          <div style="width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;box-shadow:0 8px 28px rgba(200,146,58,.28);font-size:3.5rem">🌸</div>
+          <div style="width:130px;height:130px;border-radius:50%;overflow:hidden;margin:0 auto 1.3rem;box-shadow:0 8px 28px rgba(200,146,58,.28)"><img src="/static/devon.jpg" alt="Devon" style="width:100%;height:100%;object-fit:cover;object-position:center top" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#4a9b8e,#c8923a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:3rem;font-weight:800;font-family:Dancing Script,cursive\'>D</div>'"></div>
           <h3 style="font-family:'Dancing Script',cursive;font-size:1.75rem;color:var(--dark);margin-bottom:.15rem">Devon</h3>
           <p style="color:var(--muted);font-size:.86rem;margin-bottom:1.2rem">Substance Abuse Advocate · Creator</p>
           <div style="background:#fff;border-radius:12px;padding:1rem;margin-bottom:.7rem;border:1px solid var(--border)">
@@ -793,7 +793,10 @@ app.get('/about', c => c.html(page("My Story", '/about', `
 <style>
 @media(max-width:900px){
   .container>div[style*="grid-template-columns:320px"]{grid-template-columns:1fr!important}
-  #about-sidebar{position:relative!important;top:auto!important}
+  #about-sidebar{position:relative!important;top:auto!important;width:100%!important}
+}
+@media(min-width:901px){
+  #about-sidebar{max-height:calc(100vh - 120px);overflow-y:auto;scrollbar-width:thin}
 }
 </style>
 `)))
