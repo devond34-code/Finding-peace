@@ -708,7 +708,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
     <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.12rem;color:var(--mid);line-height:1.7;max-width:650px;margin:0 auto 1.4rem">"The road to finding peace isn't a straight line — it's often messy, occasionally funny, and always a work in progress."</p>
     <div style="display:flex;flex-wrap:wrap;gap:.65rem;justify-content:center">
       <span class="tag tag-gold">📍 New Jersey</span>
-      <span class="tag tag-teal">🐕 Dog Mom to Odin</span>
+      <span class="tag tag-teal">🐕 Dog Mom to Loki</span>
       <span class="tag tag-rose">💙 Mental Health Advocate</span>
       <span class="tag tag-sage">🌿 Recovery Advocate</span>
       <span class="tag tag-lav">🎵 TikTok Creator</span>
@@ -720,7 +720,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
   <div class="container">
     <div style="display:grid;grid-template-columns:320px 1fr;gap:4rem;align-items:start">
 
-      <div class="reveal" style="position:sticky;top:90px">
+      <div class="reveal" style="position:sticky;top:90px" id="about-sidebar">
         <div style="background:linear-gradient(160deg,var(--teal-p),var(--lav-p));border-radius:24px;padding:2.3rem;text-align:center;border:1.5px solid var(--border)">
           <div style="width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;box-shadow:0 8px 28px rgba(200,146,58,.28);font-size:3.5rem">🌸</div>
           <h3 style="font-family:'Dancing Script',cursive;font-size:1.75rem;color:var(--dark);margin-bottom:.15rem">Devon</h3>
@@ -731,7 +731,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
           </div>
           <div style="background:#fff;border-radius:12px;padding:1rem;margin-bottom:1.1rem;border:1px solid var(--border)">
             <div style="font-size:.68rem;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Dog Mom To</div>
-            <div style="font-weight:800;color:var(--dark)">🐕 Odin</div>
+            <div style="font-weight:800;color:var(--dark)">🐕 Loki (Black Lab)</div>
           </div>
           <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.45rem;background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;text-decoration:none;padding:.7rem 1.1rem;border-radius:20px;font-weight:800;font-size:.86rem;box-shadow:0 4px 14px rgba(255,0,80,.28)">
             ${tiktokIcon} @finding.peaceinc
@@ -747,7 +747,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
           <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem"><div style="height:2px;width:50px;background:linear-gradient(to right,var(--gold),transparent);border-radius:2px"></div><span style="font-size:1rem;color:var(--gold)">🌿</span></div>
           <h2 class="section-title" style="margin-bottom:.9rem">The <span>Unpolished</span> Truth</h2>
           <div style="font-size:.98rem;color:var(--muted);line-height:1.82">
-            <p style="margin-bottom:1.1rem">I'm Devon, and I'm here to talk about the parts of mental health and addiction recovery that usually get polished away. Based in New Jersey, I'm a creator, a dog mom to Odin, and someone who knows firsthand that the road to finding peace isn't a straight line — it's often messy, occasionally funny, and always a work in progress.</p>
+            <p style="margin-bottom:1.1rem">I'm Devon, and I'm here to talk about the parts of mental health and addiction recovery that usually get polished away. Based in New Jersey, I'm a creator, a dog mom to Loki (my black lab), and someone who knows firsthand that the road to finding peace isn't a straight line — it's often messy, occasionally funny, and always a work in progress.</p>
             <p style="margin-bottom:1.1rem">Through my channel, Finding Peace, I advocate for a recovery process that prioritizes authenticity over perfection. I don't do "toxic positivity." Instead, I share realistic tools, direct advice, and those funny affirmations that actually work because they're rooted in the truth of the struggle.</p>
             <p>Whether you're navigating addiction recovery or just trying to keep your head above water, I'm here to show you that you don't have to have it all figured out to move forward.</p>
           </div>
@@ -790,7 +790,12 @@ app.get('/about', c => c.html(page("My Story", '/about', `
   </div>
 </section>
 
-<style>@media(max-width:900px){.container>div[style*="grid-template-columns:320px"]{grid-template-columns:1fr!important}}</style>
+<style>
+@media(max-width:900px){
+  .container>div[style*="grid-template-columns:320px"]{grid-template-columns:1fr!important}
+  #about-sidebar{position:relative!important;top:auto!important}
+}
+</style>
 `)))
 
 // ─── AFFIRMATIONS ────────────────────────────────────────────────────
