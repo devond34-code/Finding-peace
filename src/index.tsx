@@ -2,9 +2,79 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { serveStatic } from 'hono/cloudflare-workers'
 
-const app = new Hono()
+type Bindings = { FP_KV: KVNamespace }
+const app = new Hono<{ Bindings: Bindings }>()
 app.use('/static/*', serveStatic({ root: './' }))
 app.use('/api/*', cors())
+
+// ─── KV HELPERS ─────────────────────────────────────────────────────
+// All data is stored in Cloudflare KV — persists across all deploys.
+// Schema:
+//   user:email:{email}        → { id, username, email, passwordHash, ... }
+//   user:id:{id}              → same object (secondary index)
+//   session:{token}           → userId string  (TTL 30 days)
+//   stories                   → JSON array
+//   milestones                → JSON array
+//   questions                 → JSON array
+
+async function kvGetUser(kv: KVNamespace, email: string): Promise<any|null> {
+  const raw = await kv.get('user:email:'+email)
+  return raw ? JSON.parse(raw) : null
+}
+async function kvGetUserById(kv: KVNamespace, id: string): Promise<any|null> {
+  const raw = await kv.get('user:id:'+id)
+  return raw ? JSON.parse(raw) : null
+}
+async function kvSaveUser(kv: KVNamespace, user: any): Promise<void> {
+  const str = JSON.stringify(user)
+  await Promise.all([
+    kv.put('user:email:'+user.email, str),
+    kv.put('user:id:'+String(user.id), str),
+  ])
+}
+async function kvGetSession(kv: KVNamespace, token: string): Promise<string|null> {
+  return kv.get('session:'+token)
+}
+async function kvSetSession(kv: KVNamespace, token: string, userId: string): Promise<void> {
+  // 30-day TTL
+  await kv.put('session:'+token, userId, { expirationTtl: 60*60*24*30 })
+}
+async function kvDeleteSession(kv: KVNamespace, token: string): Promise<void> {
+  await kv.delete('session:'+token)
+}
+async function kvGetList(kv: KVNamespace, key: string, seed: any[]): Promise<any[]> {
+  const raw = await kv.get(key)
+  if (raw) return JSON.parse(raw)
+  // first time — seed default content and save
+  await kv.put(key, JSON.stringify(seed))
+  return seed
+}
+async function kvSaveList(kv: KVNamespace, key: string, list: any[]): Promise<void> {
+  await kv.put(key, JSON.stringify(list))
+}
+async function kvNextId(kv: KVNamespace, counterKey: string): Promise<number> {
+  const raw = await kv.get(counterKey)
+  const next = raw ? parseInt(raw) + 1 : 1
+  await kv.put(counterKey, String(next))
+  return next
+}
+
+function hashPassword(pw: string): string {
+  let h = 0
+  for (let i = 0; i < pw.length; i++) { h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0 }
+  return 'h' + Math.abs(h).toString(36) + pw.length.toString(36)
+}
+function genToken(): string {
+  return Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2)
+}
+async function getUser(c: any): Promise<any|null> {
+  const auth = c.req.header('Authorization') || ''
+  const token = auth.replace('Bearer ', '').trim()
+  if (!token) return null
+  const uid = await kvGetSession(c.env.FP_KV, token)
+  if (!uid) return null
+  return kvGetUserById(c.env.FP_KV, uid)
+}
 
 // ─── SHARED STYLES & LAYOUT ─────────────────────────────────────────
 const css = `
@@ -379,109 +449,95 @@ ${scripts()}
 </html>`
 }
 
-// ─── AUTH ────────────────────────────────────────────────────────────
-const users: any[] = []        // { id, username, email, passwordHash, avatar, bio, soberDate, joinDate, recoveryGoal }
-const sessions: Map<string, number> = new Map() // token -> userId
-
-function hashPassword(pw: string): string {
-  // Simple hash (no Node crypto in CF Workers — use Web Crypto style XOR+base64)
-  let h = 0
-  for (let i = 0; i < pw.length; i++) { h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0 }
-  return 'h' + Math.abs(h).toString(36) + pw.length.toString(36)
-}
-function genToken(): string {
-  return Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2)
-}
-function getUser(c: any): any | null {
-  const auth = c.req.header('Authorization') || ''
-  const token = auth.replace('Bearer ', '').trim()
-  if (!token) return null
-  const uid = sessions.get(token)
-  if (!uid) return null
-  return users.find(u => u.id === uid) || null
-}
-
-// Auth API
+// ─── AUTH API ────────────────────────────────────────────────────────
 app.post('/api/auth/register', async c => {
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
   const b = await c.req.json()
-  const { username, email, password, soberDate, recoveryGoal } = b
+  const { username, email, password, recoveryGoal } = b
   if (!username || !email || !password) return c.json({ error: 'Username, email and password required' }, 400)
-  if (users.find(u => u.email === email)) return c.json({ error: 'Email already registered' }, 409)
-  if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) return c.json({ error: 'Username taken' }, 409)
+  const emailKey = email.trim().toLowerCase()
+  const existing = await kvGetUser(kv, emailKey)
+  if (existing) return c.json({ error: 'Email already registered' }, 409)
+  const id = await kvNextId(kv, 'counter:users')
   const user = {
-    id: users.length + 1,
+    id,
     username: username.trim(),
-    email: email.trim().toLowerCase(),
+    email: emailKey,
     passwordHash: hashPassword(password),
-    avatar: username[0].toUpperCase(),
+    avatar: username.trim()[0].toUpperCase(),
     bio: '',
-    soberDate: soberDate || null,
+    soberDate: null,
     recoveryGoal: recoveryGoal || '',
     joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
     likedStories: [] as number[],
     likedMilestones: [] as number[],
     likedQuestions: [] as number[],
   }
-  users.push(user)
+  await kvSaveUser(kv, user)
   const token = genToken()
-  sessions.set(token, user.id)
+  await kvSetSession(kv, token, String(id))
   const { passwordHash, ...safe } = user
   return c.json({ token, user: safe }, 201)
 })
 
 app.post('/api/auth/login', async c => {
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
   const b = await c.req.json()
   const { email, password } = b
-  const user = users.find(u => u.email === email?.trim().toLowerCase())
+  const user = await kvGetUser(kv, email?.trim().toLowerCase())
   if (!user || user.passwordHash !== hashPassword(password)) return c.json({ error: 'Invalid email or password' }, 401)
   const token = genToken()
-  sessions.set(token, user.id)
+  await kvSetSession(kv, token, String(user.id))
   const { passwordHash, ...safe } = user
   return c.json({ token, user: safe })
 })
 
-app.post('/api/auth/logout', c => {
+app.post('/api/auth/logout', async c => {
+  const kv = c.env.FP_KV
   const auth = c.req.header('Authorization') || ''
   const token = auth.replace('Bearer ', '').trim()
-  sessions.delete(token)
+  if (kv && token) await kvDeleteSession(kv, token)
   return c.json({ ok: true })
 })
 
-app.get('/api/auth/me', c => {
-  const user = getUser(c)
+app.get('/api/auth/me', async c => {
+  const user = await getUser(c)
   if (!user) return c.json({ error: 'Not authenticated' }, 401)
   const { passwordHash, ...safe } = user
   return c.json(safe)
 })
 
 app.patch('/api/auth/profile', async c => {
-  const user = getUser(c)
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
+  const user = await getUser(c)
   if (!user) return c.json({ error: 'Not authenticated' }, 401)
   const b = await c.req.json()
   if (b.bio !== undefined) user.bio = b.bio.slice(0, 200)
   if (b.soberDate !== undefined) user.soberDate = b.soberDate
   if (b.recoveryGoal !== undefined) user.recoveryGoal = b.recoveryGoal
+  await kvSaveUser(kv, user)
   const { passwordHash, ...safe } = user
   return c.json(safe)
 })
 
-// ─── DATA ────────────────────────────────────────────────────────────
-const stories: any[] = [
+// ─── SEED DATA (used only on first load when KV is empty) ──────────────
+const seedStories = [
   { id:1, name:"Sarah M.", avatar:"S", story:"Three years ago I hit rock bottom. Today I'm 18 months sober and just got my dream job. Finding Peace helped me realize I wasn't alone. If you're struggling — there is light on the other side. 💙", date:"March 28, 2025", likes:47, milestone:"18 months sober" },
   { id:2, name:"Jake T.", avatar:"J", story:"Anxiety used to rule my life. I couldn't leave my house some days. Through daily affirmations and this community, I've learned to take it one moment at a time. This week I went to a concert — first one in 4 years!", date:"March 25, 2025", likes:34, milestone:"First concert in 4 years" },
   { id:3, name:"Maria L.", avatar:"M", story:"I found Finding Peace during my darkest hour. The funny affirmations made me laugh when all I wanted to do was cry. Sometimes you just need someone to say 'hey, this is hard, but you're still here and that matters.'", date:"March 20, 2025", likes:62, milestone:"6 months of therapy" },
   { id:4, name:"Anonymous", avatar:"A", story:"Day 47. Just needed to say it out loud somewhere: I'm doing this. It's hard and I cry a lot but I am actually doing this.", date:"March 15, 2025", likes:88, milestone:"Day 47 clean" },
 ]
-
-const milestones: any[] = [
+const seedMilestones = [
   { id:1, name:"Alex R.", avatar:"A", milestone:"1 Year Sober 🎉", description:"One full year! Never thought I'd say that. To anyone reading — it IS possible.", date:"April 1, 2025", likes:89, category:"sobriety" },
   { id:2, name:"Devon K.", avatar:"D", milestone:"1 Week No Social Media", description:"Digital detox complete. My anxiety dropped SO much.", date:"March 30, 2025", likes:23, category:"personal" },
   { id:3, name:"Priya S.", avatar:"P", milestone:"90 Days Clean 💪", description:"90 days. One day at a time. Still here. Still fighting.", date:"March 27, 2025", likes:71, category:"sobriety" },
   { id:4, name:"Chris B.", avatar:"C", milestone:"Started Therapy", description:"Finally asked for help. It took everything I had. But I did it.", date:"March 22, 2025", likes:55, category:"therapy" },
   { id:5, name:"River T.", avatar:"R", milestone:"First AA Meeting 🌿", description:"Shook the whole time. Didn't say a word. But I showed up.", date:"March 18, 2025", likes:102, category:"sobriety" },
 ]
-
-const questions: any[] = [
+const seedQuestions = [
   { id:1, name:"Anonymous", avatar:"A", question:"How do you handle cravings at 2am when there's no one to call?", category:"cravings", date:"April 2, 2025", likes:14, answers:5 },
   { id:2, name:"Jordan M.", avatar:"J", question:"What's the first thing you did when you decided to get sober? I'm on day 1 and don't know where to start.", category:"getting-started", date:"March 31, 2025", likes:22, answers:9 },
   { id:3, name:"Anonymous", avatar:"A", question:"Does the loneliness ever go away? Early recovery feels so isolating.", category:"emotions", date:"March 28, 2025", likes:37, answers:11 },
@@ -1821,65 +1877,100 @@ if(_t){
 </script>
 `)))
 
-// ─── API ──────────────────────────────────────────────────────────────
-app.get('/api/stories', c => c.json(stories))
+// ─── COMMUNITY DATA APIS (KV-backed) ──────────────────────────────────
+app.get('/api/stories', async c => {
+  const kv = c.env.FP_KV
+  if (!kv) return c.json(seedStories)
+  return c.json(await kvGetList(kv, 'stories', seedStories))
+})
 app.post('/api/stories', async c => {
-  const user = getUser(c)
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
+  const user = await getUser(c)
   if (!user) return c.json({ error: 'Login required to share a story' }, 401)
   const b = await c.req.json()
-  const s = { id: stories.length + 1, userId: user.id, name: user.username, avatar: user.avatar, story: b.story, date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0, milestone: b.milestone || '' }
-  stories.unshift(s); return c.json(s, 201)
+  if (!b.story?.trim()) return c.json({ error: 'Story text required' }, 400)
+  const list = await kvGetList(kv, 'stories', seedStories)
+  const id = await kvNextId(kv, 'counter:stories')
+  const s = { id, userId: user.id, name: user.username, avatar: user.avatar, story: b.story.trim(), date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), likes: 0, milestone: b.milestone || '' }
+  list.unshift(s)
+  await kvSaveList(kv, 'stories', list)
+  return c.json(s, 201)
 })
 app.post('/api/stories/:id/like', async c => {
-  const user = getUser(c)
-  const s = stories.find(x => x.id === parseInt(c.req.param('id')))
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ likes: 0 })
+  const list = await kvGetList(kv, 'stories', seedStories)
+  const s = list.find((x:any) => x.id === parseInt(c.req.param('id')))
   if (!s) return c.json({ error: 'Not found' }, 404)
   s.likes++
-  if (user && !user.likedStories.includes(s.id)) user.likedStories.push(s.id)
+  await kvSaveList(kv, 'stories', list)
+  const user = await getUser(c)
+  if (user) { if (!user.likedStories) user.likedStories=[]; if(!user.likedStories.includes(s.id)){user.likedStories.push(s.id);await kvSaveUser(kv,user)} }
   return c.json({ likes: s.likes })
 })
-app.get('/api/milestones', c => c.json(milestones))
+
+app.get('/api/milestones', async c => {
+  const kv = c.env.FP_KV
+  if (!kv) return c.json(seedMilestones)
+  return c.json(await kvGetList(kv, 'milestones', seedMilestones))
+})
 app.post('/api/milestones', async c => {
-  const user = getUser(c)
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
+  const user = await getUser(c)
   if (!user) return c.json({ error: 'Login required to share a milestone' }, 401)
   const b = await c.req.json()
-  const m = { id: milestones.length + 1, userId: user.id, name: user.username, avatar: user.avatar, milestone: b.milestone, description: b.description || '', date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), likes: 0, category: b.category || 'other' }
-  milestones.unshift(m); return c.json(m, 201)
+  if (!b.milestone?.trim()) return c.json({ error: 'Milestone text required' }, 400)
+  const list = await kvGetList(kv, 'milestones', seedMilestones)
+  const id = await kvNextId(kv, 'counter:milestones')
+  const m = { id, userId: user.id, name: user.username, avatar: user.avatar, milestone: b.milestone.trim(), description: b.description||'', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), likes: 0, category: b.category||'other' }
+  list.unshift(m)
+  await kvSaveList(kv, 'milestones', list)
+  return c.json(m, 201)
 })
 app.post('/api/milestones/:id/like', async c => {
-  const user = getUser(c)
-  const m = milestones.find(x => x.id === parseInt(c.req.param('id')))
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ likes: 0 })
+  const list = await kvGetList(kv, 'milestones', seedMilestones)
+  const m = list.find((x:any) => x.id === parseInt(c.req.param('id')))
   if (!m) return c.json({ error: 'Not found' }, 404)
   m.likes++
-  if (user && !user.likedMilestones.includes(m.id)) user.likedMilestones.push(m.id)
+  await kvSaveList(kv, 'milestones', list)
+  const user = await getUser(c)
+  if (user) { if (!user.likedMilestones) user.likedMilestones=[]; if(!user.likedMilestones.includes(m.id)){user.likedMilestones.push(m.id);await kvSaveUser(kv,user)} }
   return c.json({ likes: m.likes })
 })
 
-// ─── QUESTIONS API ─────────────────────────────────────────────────────
-app.get('/api/questions', c => c.json(questions))
+app.get('/api/questions', async c => {
+  const kv = c.env.FP_KV
+  if (!kv) return c.json(seedQuestions)
+  return c.json(await kvGetList(kv, 'questions', seedQuestions))
+})
 app.post('/api/questions', async c => {
-  const user = getUser(c)
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ error: 'Storage not configured' }, 503)
+  const user = await getUser(c)
   if (!user) return c.json({ error: 'Login required to ask a question' }, 401)
   const b = await c.req.json()
-  const q = {
-    id: questions.length + 1,
-    userId: user.id,
-    name: user.username,
-    avatar: user.avatar,
-    question: b.question,
-    category: b.category || 'general',
-    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-    likes: 0,
-    answers: 0
-  }
-  questions.unshift(q); return c.json(q, 201)
+  if (!b.question?.trim()) return c.json({ error: 'Question text required' }, 400)
+  const list = await kvGetList(kv, 'questions', seedQuestions)
+  const id = await kvNextId(kv, 'counter:questions')
+  const q = { id, userId: user.id, name: user.username, avatar: user.avatar, question: b.question.trim(), category: b.category||'general', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), likes: 0, answers: 0 }
+  list.unshift(q)
+  await kvSaveList(kv, 'questions', list)
+  return c.json(q, 201)
 })
 app.post('/api/questions/:id/like', async c => {
-  const user = getUser(c)
-  const q = questions.find(x => x.id === parseInt(c.req.param('id')))
+  const kv = c.env.FP_KV
+  if (!kv) return c.json({ likes: 0 })
+  const list = await kvGetList(kv, 'questions', seedQuestions)
+  const q = list.find((x:any) => x.id === parseInt(c.req.param('id')))
   if (!q) return c.json({ error: 'Not found' }, 404)
   q.likes++
-  if (user && !user.likedQuestions.includes(q.id)) user.likedQuestions.push(q.id)
+  await kvSaveList(kv, 'questions', list)
+  const user = await getUser(c)
+  if (user) { if (!user.likedQuestions) user.likedQuestions=[]; if(!user.likedQuestions.includes(q.id)){user.likedQuestions.push(q.id);await kvSaveUser(kv,user)} }
   return c.json({ likes: q.likes })
 })
 
