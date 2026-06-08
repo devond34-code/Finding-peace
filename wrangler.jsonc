@@ -4,5 +4,12 @@
   "pages_build_output_dir": "./dist",
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "FP_KV",
+      "id": "fp-kv-local",
+      "preview_id": "fp-kv-local"
+    }
   ]
 }

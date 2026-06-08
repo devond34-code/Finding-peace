@@ -127,6 +127,7 @@ body{font-family:'Nunito',sans-serif;background:var(--warm);color:var(--dark);mi
 .fsoc:hover{transform:scale(1.15)}
 .fsoc-tik{background:linear-gradient(135deg,#ff0050,#00f2ea);color:#fff}
 .fsoc-ig{background:linear-gradient(135deg,#f09433,#bc1888);color:#fff}
+.fsoc-dc{background:linear-gradient(135deg,#5865f2,#7289da);color:#fff}
 .footer-col h4{font-family:'Playfair Display',serif;color:var(--gold-l);font-size:1rem;margin-bottom:.9rem}
 .footer-col a{display:block;color:rgba(253,246,236,.6);text-decoration:none;font-size:.86rem;margin-bottom:.5rem;transition:color .2s}
 .footer-col a:hover{color:var(--gold-l)}
@@ -379,6 +380,7 @@ function footer() {
       <div class="footer-socials">
         <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" class="fsoc fsoc-tik">${tiktokIcon}</a>
         <a href="https://instagram.com" target="_blank" class="fsoc fsoc-ig"><i class="fab fa-instagram"></i></a>
+        <a href="https://discord.gg/gQ8GJpcdB" target="_blank" class="fsoc fsoc-dc"><i class="fab fa-discord"></i></a>
       </div>
     </div>
     <div class="footer-col">
@@ -569,7 +571,7 @@ app.get('/', c => c.html(page('Welcome Home', '/', `
         <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem">
           <a href="/community" class="btn btn-teal"><i class="fas fa-heart"></i> Join the Community</a>
           <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="btn" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;box-shadow:0 4px 18px rgba(255,0,80,.3)">${tiktokIcon} Follow on TikTok</a>
-          <a href="/resources" class="btn btn-ghost">Find Resources →</a>
+          <a href="/merch" class="btn btn-primary"><i class="fas fa-store"></i> Shop</a>
         </div>
         <div style="display:flex;gap:2rem;flex-wrap:wrap">
           <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold)">30+</div><div style="font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em">Affirmations</div></div>
@@ -787,7 +789,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
           </div>
           <div style="background:#fff;border-radius:12px;padding:1rem;margin-bottom:1.1rem;border:1px solid var(--border)">
             <div style="font-size:.68rem;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Dog Mom To</div>
-            <div style="font-weight:800;color:var(--dark)">🐕 Odin &amp; Loki (Black Lab)</div>
+            <div style="font-weight:800;color:var(--dark)">🐕 Odin &amp; Loki</div>
           </div>
           <a href="https://www.tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.45rem;background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;text-decoration:none;padding:.7rem 1.1rem;border-radius:20px;font-weight:800;font-size:.86rem;box-shadow:0 4px 14px rgba(255,0,80,.28)">
             ${tiktokIcon} @finding.peaceinc
@@ -803,7 +805,7 @@ app.get('/about', c => c.html(page("My Story", '/about', `
           <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem"><div style="height:2px;width:50px;background:linear-gradient(to right,var(--gold),transparent);border-radius:2px"></div><span style="font-size:1rem;color:var(--gold)">🌿</span></div>
           <h2 class="section-title" style="margin-bottom:.9rem">The <span>Unpolished</span> Truth</h2>
           <div style="font-size:.98rem;color:var(--muted);line-height:1.82">
-            <p style="margin-bottom:1.1rem">I'm Devon, and I'm here to talk about the parts of mental health and addiction recovery that usually get polished away. Based in New Jersey, I'm a creator, a dog mom to Odin and Loki (my black lab), and someone who knows firsthand that the road to finding peace isn't a straight line — it's often messy, occasionally funny, and always a work in progress.</p>
+            <p style="margin-bottom:1.1rem">I'm Devon, and I'm here to talk about the parts of mental health and addiction recovery that usually get polished away. Based in New Jersey, I'm a creator, a dog mom to Odin and Loki, and someone who knows firsthand that the road to finding peace isn't a straight line — it's often messy, occasionally funny, and always a work in progress.</p>
             <p style="margin-bottom:1.1rem">Through my channel, Finding Peace, I advocate for a recovery process that prioritizes authenticity over perfection. I don't do "toxic positivity." Instead, I share realistic tools, direct advice, and those funny affirmations that actually work because they're rooted in the truth of the struggle.</p>
             <p>Whether you're navigating addiction recovery or just trying to keep your head above water, I'm here to show you that you don't have to have it all figured out to move forward.</p>
           </div>
@@ -1583,6 +1585,7 @@ app.get('/links', c => c.html(page("Links", '/links', `
     <p style="color:rgba(255,255,255,.5);font-size:.85rem;max-width:400px;margin:0 auto">Mental health &amp; addiction recovery — real talk, real tools, real community.</p>
     <div style="display:flex;gap:.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap">
       <a href="https://tiktok.com/@finding.peaceinc" target="_blank" style="background:linear-gradient(135deg,#ff0050,#cc0040);color:#fff;padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:800;text-decoration:none">${tiktokIcon} TikTok</a>
+      <a href="https://discord.gg/gQ8GJpcdB" target="_blank" style="background:linear-gradient(135deg,#5865f2,#7289da);color:#fff;padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:800;text-decoration:none"><i class="fab fa-discord"></i> Discord</a>
       <a href="https://youtube.com/@finding_peaceinc" target="_blank" style="background:#ff0000;color:#fff;padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:800;text-decoration:none"><i class="fab fa-youtube"></i> YouTube</a>
     </div>
   </div>
@@ -1610,6 +1613,10 @@ app.get('/links', c => c.html(page("Links", '/links', `
     <a href="https://tiktok.com/@finding.peaceinc" target="_blank" rel="noopener" class="link-item" style="display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,#0d0d0d,#1a1a2e);color:#fff;text-decoration:none;padding:1.1rem 1.4rem;border-radius:16px;margin-bottom:.75rem;transition:transform .2s;box-shadow:0 4px 16px rgba(0,0,0,.15)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ff0050,#00f2ea);display:flex;align-items:center;justify-content:center;flex-shrink:0">${tiktokIcon}</div>
       <div><div style="font-weight:800;font-size:.95rem">Finding Peace TikTok</div><div style="font-size:.78rem;opacity:.6;margin-top:.1rem">@finding.peaceinc — Daily affirmations &amp; recovery talk</div></div>
+    </a>
+    <a href="https://discord.gg/gQ8GJpcdB" target="_blank" rel="noopener" class="link-item" style="display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,#3c3f8f,#5865f2);color:#fff;text-decoration:none;padding:1.1rem 1.4rem;border-radius:16px;margin-bottom:.75rem;transition:transform .2s;box-shadow:0 4px 16px rgba(88,101,242,.25)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#5865f2,#7289da);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem"><i class="fab fa-discord"></i></div>
+      <div><div style="font-weight:800;font-size:.95rem">Finding Peace Discord</div><div style="font-size:.78rem;opacity:.6;margin-top:.1rem">Join our community server — support, chat &amp; connection</div></div>
       <i class="fas fa-arrow-right" style="margin-left:auto;opacity:.4"></i>
     </a>
 
