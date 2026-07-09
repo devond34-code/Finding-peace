@@ -1403,6 +1403,7 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
 <section style="padding:1.4rem 1.5rem;background:#fff;border-bottom:1.5px solid var(--border);position:sticky;top:68px;z-index:100">
   <div class="container"><div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center">
     <button class="filter-btn active" onclick="fMerch('all',this)">🌿 All</button>
+    <button class="filter-btn" onclick="fMerch('digital',this)">📓 Digital Downloads</button>
     <button class="filter-btn" onclick="fMerch('tees',this)">👕 Tees</button>
     <button class="filter-btn" onclick="fMerch('sweatshirts',this)">🧥 Sweatshirts</button>
     <button class="filter-btn" onclick="fMerch('mugs',this)">☕ Mugs</button>
@@ -1415,6 +1416,30 @@ app.get('/merch', c => c.html(page("Merch", '/merch', `
 <section class="section" style="background:var(--cream)">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem" id="merchGrid">
+
+      <!-- DIGITAL DOWNLOADS -->
+      <div class="card merch-card" data-cat="digital" style="overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#e8e2f5,#d0eeea);height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.8rem">
+          <div style="font-size:4.5rem">📓</div>
+          <div style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--mid);text-align:center;padding:0 1rem">30-Day Journal</div>
+          <div style="position:absolute;top:.75rem;left:.75rem"><span class="tag tag-lav">📥 Digital Download</span></div>
+          <div style="position:absolute;top:.75rem;right:.75rem;background:var(--teal);color:#fff;font-size:.7rem;font-weight:800;padding:.25rem .6rem;border-radius:10px">✨ New</div>
+        </div>
+        <div style="padding:1.3rem">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--dark);margin-bottom:.3rem">30-Day Mental Wellness & Reflection Journal</h3>
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:.4rem">A guided 66-page month of honest self-check-ins, morning intentions, mid-day grounding &amp; evening reflections. No toxic positivity — just real talk.</p>
+          <ul style="color:var(--muted);font-size:.78rem;margin-bottom:.9rem;padding-left:1.1rem;line-height:1.8">
+            <li>📅 30 daily guided pages</li>
+            <li>🧠 Morning, mid-day &amp; evening prompts</li>
+            <li>🔥 Weekly "Brain Dump" &amp; Clearance pages</li>
+            <li>📥 Instant PDF download</li>
+          </ul>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--gold)">$14.99</span>
+            <a href="/static/journal.pdf" download="Finding-Peace-30-Day-Journal.pdf" class="btn btn-primary" style="padding:.5rem 1.1rem;font-size:.82rem"><i class="fas fa-download"></i> Download</a>
+          </div>
+        </div>
+      </div>
 
       <!-- TEES -->
       <div class="card merch-card" data-cat="tees" style="overflow:hidden">
